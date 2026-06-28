@@ -4,6 +4,9 @@ Tree-sitter grammar for the Mux language (Neovim/Helix/Emacs). `grammar.js` is a
 the repo root, as the tree-sitter ecosystem requires. Part of the multi-repo
 [muxlang](https://github.com/muxlang) ecosystem.
 
+> Cross-repo architecture, design rationale, the feature map, and the release
+> process live in [muxlang/context](https://github.com/muxlang/context).
+
 ## Critical Rules
 
 - **No special characters** - avoid em-dashes, emojis, or other non-ASCII in code,
