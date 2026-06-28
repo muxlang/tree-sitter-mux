@@ -11,6 +11,6 @@
     "license": "MIT",
     "description": "Mux programming language grammar for Tree-sitter",
     "authors": [{"name": "Derek Corniello", "url": "https://github.com/DerekCorniello"}],
-    "links": {"repository": "https://github.com/DerekCorniello/mux-lang"}
+    "links": {"repository": "https://github.com/muxlang/tree-sitter-mux"}
   }
 }

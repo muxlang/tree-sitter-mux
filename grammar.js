@@ -1,4 +1,4 @@
-const syntax = require('../shared/syntax-matrix.json');
+const syntax = require('./syntax-matrix.json');
 
 const choice_of = values => choice(...values);
 const token_of = values => (

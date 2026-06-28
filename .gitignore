@@ -1,0 +1,8 @@
+node_modules/
+build/
+*.log
+*.wasm
+# tree-sitter generates these from grammar.js (`tree-sitter generate`)
+/src/parser.c
+/src/grammar.json
+/src/node-types.json
