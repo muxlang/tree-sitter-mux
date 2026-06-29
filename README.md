@@ -45,7 +45,7 @@ language-version mapping.
 
 - [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting) - canonical syntax spec (vendored here) + TextMate/VSCode tooling
 - [mux-compiler](https://github.com/muxlang/mux-compiler) - the language/compiler
-- [context](https://github.com/muxlang/context) - cross-repo architecture, design notes, glossary, releases
+- [mux-context](https://github.com/muxlang/mux-context) - cross-repo architecture, design notes, glossary, releases
 
 ## License
 
