@@ -8,6 +8,6 @@
     "url": "https://github.com/muxlang/tree-sitter-mux"
   },
   "scripts": {
-    "sync-matrix": "curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o ./syntax-matrix.json"
+    "sync-matrix": "curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o /tmp/syntax-matrix-canonical.json && mv /tmp/syntax-matrix-canonical.json ./syntax-matrix.json"
   }
 }

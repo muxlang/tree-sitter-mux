@@ -19,6 +19,7 @@ jobs:
           node-version: '20'
       - name: Verify vendored syntax-matrix.json matches canonical
         run: |
+          set -euo pipefail
           curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o /tmp/canonical-syntax-matrix.json
           if ! diff -u /tmp/canonical-syntax-matrix.json ./syntax-matrix.json; then
             echo "::error::Vendored syntax-matrix.json has drifted from canonical shared/syntax-matrix.json in muxlang/mux-syntax-highlighting."
