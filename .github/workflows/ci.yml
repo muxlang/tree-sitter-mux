@@ -17,6 +17,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Verify vendored syntax-matrix.json matches canonical
+        run: |
+          set -euo pipefail
+          curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o /tmp/canonical-syntax-matrix.json
+          if ! diff -u /tmp/canonical-syntax-matrix.json ./syntax-matrix.json; then
+            echo "::error::Vendored syntax-matrix.json has drifted from canonical shared/syntax-matrix.json in muxlang/mux-syntax-highlighting."
+            echo "Re-sync it with: ./scripts/sync-matrix.sh (then commit the updated syntax-matrix.json)."
+            exit 1
+          fi
       - run: npm install -g tree-sitter-cli@0.26.8
       - name: Generate parser
         run: tree-sitter generate grammar.js
