@@ -13,8 +13,8 @@ tooling: Neovim (nvim-treesitter), Helix, and Emacs.
   reads it. The canonical spec is maintained in
   [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting);
   keep this copy in sync with it. CI verifies the vendored copy against canonical
-  on every push/PR and fails on drift; run `npm run sync-matrix` to refresh it in
-  one command (then commit the updated `syntax-matrix.json`).
+  on every push/PR and fails on drift; run `./scripts/sync-matrix.sh` to refresh
+  it in one command (then commit the updated `syntax-matrix.json`).
 - `queries/highlights.scm` - highlight queries (generated from the spec, vendored).
 - `test/` - corpus tests run by `tree-sitter test`.
 
