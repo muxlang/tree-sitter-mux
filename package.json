@@ -1,0 +1,13 @@
+{
+  "name": "tree-sitter-mux",
+  "version": "0.4.1",
+  "description": "Mux programming language grammar for Tree-sitter",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muxlang/tree-sitter-mux"
+  },
+  "scripts": {
+    "sync-matrix": "curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o ./syntax-matrix.json"
+  }
+}
