@@ -68,6 +68,7 @@
 (trait_clause (type_path) @type)
 (type_bound_clause (type_path) @type)
 (enum_variant name: (identifier) @constructor)
+(enum_payload_field type: (type_name) @type)
 
 ((identifier) @type
  (#match? @type "^(string|bool|void|int|float|char|optional|result|list|map|tuple|set|range|Stringable|Hashable|Thread|Error|Self)$"))
