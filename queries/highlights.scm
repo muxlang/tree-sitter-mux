@@ -28,6 +28,7 @@
 (break_statement) @keyword @keyword.control
 (continue_statement) @keyword @keyword.control
 (trait_clause "is" @keyword @keyword.operator)
+(where_clause "where" @keyword @keyword.declaration)
 (import_alias "as" @keyword @keyword.operator)
 (keyword_constant) @constant @constant.language
 
