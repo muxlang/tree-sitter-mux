@@ -28,6 +28,7 @@
 (break_statement) @keyword @keyword.control
 (continue_statement) @keyword @keyword.control
 (trait_clause "is" @keyword @keyword.operator)
+(where_clause "where" @keyword @keyword.declaration)
 (import_alias "as" @keyword @keyword.operator)
 (keyword_constant) @constant @constant.language
 
@@ -67,6 +68,7 @@
 (trait_clause (type_path) @type)
 (type_bound_clause (type_path) @type)
 (enum_variant name: (identifier) @constructor)
+(enum_payload_field type: (type_name) @type)
 
 ((identifier) @type
  (#match? @type "^(string|bool|void|int|float|char|optional|result|list|map|tuple|set|range|Stringable|Hashable|Thread|Error|Self)$"))

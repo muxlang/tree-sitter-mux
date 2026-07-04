@@ -84,6 +84,7 @@ module.exports = grammar({
       '(',
       optional($.param_list),
       ')',
+      optional($.where_clause),
       'returns',
       field('return_type', $.type_name),
       $.block
@@ -97,6 +98,7 @@ module.exports = grammar({
       '(',
       optional($.param_list),
       ')',
+      optional($.where_clause),
       'returns',
       field('return_type', $.type_name)
     )),
@@ -106,6 +108,7 @@ module.exports = grammar({
       '(',
       optional($.param_list),
       ')',
+      optional($.where_clause),
       'returns',
       field('return_type', $.type_name),
       $.block
@@ -149,7 +152,8 @@ module.exports = grammar({
       field('name', $.identifier),
       optional($.type_params),
       optional($.trait_clause),
-      $.class_body
+      $.class_body,
+      optional($.where_clause)
     ),
 
     interface_declaration: $ => seq(
@@ -189,7 +193,8 @@ module.exports = grammar({
       optional('const'),
       field('type', $.type_name),
       field('name', $.identifier),
-      optional(seq('=', $.expression))
+      optional(seq('=', $.expression)),
+      optional($.where_clause)
     ),
 
     param_list: $ => seq(
@@ -205,7 +210,30 @@ module.exports = grammar({
 
     enum_variant: $ => seq(
       field('name', $.identifier),
-      optional(seq('(', optional($.type_list), ')'))
+      optional(seq('(', optional($.enum_payload), ')')),
+      optional($.where_clause)
+    ),
+
+    enum_payload: $ => seq(
+      $.enum_payload_field,
+      repeat(seq(',', $.enum_payload_field))
+    ),
+
+    // Payload fields may be named (Code(int value)) or bare types (Code(int)).
+    enum_payload_field: $ => seq(
+      field('type', $.type_name),
+      optional(field('name', $.identifier))
+    ),
+
+    where_clause: $ => seq(
+      'where',
+      '{',
+      optional(seq(
+        $.expression,
+        repeat(seq(',', $.expression)),
+        optional(',')
+      )),
+      '}'
     ),
 
     if_statement: $ => seq(

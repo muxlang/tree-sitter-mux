@@ -1,0 +1,369 @@
+==================
+Where clause on a function
+==================
+
+func divide(float a, float b) where { b != 0.0 } returns float { return a }
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (param_list
+        (parameter
+          (type_name
+            (type_path
+              (identifier)))
+          (identifier))
+        (parameter
+          (type_name
+            (type_path
+              (identifier)))
+          (identifier)))
+      (where_clause
+        (expression
+          (logic_or_expression
+            (logic_and_expression
+              (equality_expression
+                (comparison_expression
+                  (range_expression
+                    (sum_expression
+                      (product_expression
+                        (power_expression
+                          (unary_expression
+                            (postfix_expression
+                              (primary_expression
+                                (identifier)))))))))
+                (comparison_expression
+                  (range_expression
+                    (sum_expression
+                      (product_expression
+                        (power_expression
+                          (unary_expression
+                            (postfix_expression
+                              (primary_expression
+                                (literal
+                                  (float_literal)))))))))))))))
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (return_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier)))))))))))))))))))
+
+==================
+Where clauses on fields and class invariants
+==================
+
+class Server {
+    int port = 8080 where { port > 0, port < 65535 }
+} where {
+    port != 22
+}
+
+---
+
+(source_file
+  (declaration
+    (class_declaration
+      (identifier)
+      (class_body
+        (field_declaration
+          (type_name
+            (type_path
+              (identifier)))
+          (identifier)
+          (expression
+            (logic_or_expression
+              (logic_and_expression
+                (equality_expression
+                  (comparison_expression
+                    (range_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal))))))))))))))
+          (where_clause
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier))))))))
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (literal
+                                      (int_literal))))))))))))))
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier))))))))
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (literal
+                                      (int_literal)))))))))))))))))
+      (where_clause
+        (expression
+          (logic_or_expression
+            (logic_and_expression
+              (equality_expression
+                (comparison_expression
+                  (range_expression
+                    (sum_expression
+                      (product_expression
+                        (power_expression
+                          (unary_expression
+                            (postfix_expression
+                              (primary_expression
+                                (identifier)))))))))
+                (comparison_expression
+                  (range_expression
+                    (sum_expression
+                      (product_expression
+                        (power_expression
+                          (unary_expression
+                            (postfix_expression
+                              (primary_expression
+                                (literal
+                                  (int_literal))))))))))))))))))
+
+==================
+Where clause on an interface method
+==================
+
+interface Divider {
+    func div(int n) where { n != 0 } returns int
+}
+
+---
+
+(source_file
+  (declaration
+    (interface_declaration
+      (identifier)
+      (interface_body
+        (interface_method_declaration
+          (identifier)
+          (param_list
+            (parameter
+              (type_name
+                (type_path
+                  (identifier)))
+              (identifier)))
+          (where_clause
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier)))))))))
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (literal
+                                      (int_literal)))))))))))))))
+          (type_name
+            (type_path
+              (identifier))))))))
+
+==================
+Where clause on an enum variant with a named payload
+==================
+
+enum Status {
+    Unknown,
+    Code(int value) where { value >= 100, value <= 599 }
+}
+
+---
+
+(source_file
+  (declaration
+    (enum_declaration
+      (identifier)
+      (enum_body
+        (enum_variant
+          (identifier))
+        (enum_variant
+          (identifier)
+          (enum_payload
+            (enum_payload_field
+              (type_name
+                (type_path
+                  (identifier)))
+              (identifier)))
+          (where_clause
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier))))))))
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (literal
+                                      (int_literal))))))))))))))
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (identifier))))))))
+                      (range_expression
+                        (sum_expression
+                          (product_expression
+                            (power_expression
+                              (unary_expression
+                                (postfix_expression
+                                  (primary_expression
+                                    (literal
+                                      (int_literal))))))))))))))))))))
+
+==================
+Where clause on a lambda
+==================
+
+auto bounded = func(int x) where { x < 100 } returns int { return x }
+
+---
+
+(source_file
+  (declaration
+    (auto_declaration
+      (identifier)
+      (expression
+        (logic_or_expression
+          (logic_and_expression
+            (equality_expression
+              (comparison_expression
+                (range_expression
+                  (sum_expression
+                    (product_expression
+                      (power_expression
+                        (unary_expression
+                          (postfix_expression
+                            (primary_expression
+                              (lambda_expression
+                                (param_list
+                                  (parameter
+                                    (type_name
+                                      (type_path
+                                        (identifier)))
+                                    (identifier)))
+                                (where_clause
+                                  (expression
+                                    (logic_or_expression
+                                      (logic_and_expression
+                                        (equality_expression
+                                          (comparison_expression
+                                            (range_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (primary_expression
+                                                          (identifier))))))))
+                                            (range_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (primary_expression
+                                                          (literal
+                                                            (int_literal)))))))))))))))
+                                (type_name
+                                  (type_path
+                                    (identifier)))
+                                (block
+                                  (statement
+                                    (return_statement
+                                      (expression
+                                        (logic_or_expression
+                                          (logic_and_expression
+                                            (equality_expression
+                                              (comparison_expression
+                                                (range_expression
+                                                  (sum_expression
+                                                    (product_expression
+                                                      (power_expression
+                                                        (unary_expression
+                                                          (postfix_expression
+                                                            (primary_expression
+                                                              (identifier))))))))))))))))))))))))))))))))
