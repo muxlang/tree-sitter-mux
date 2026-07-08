@@ -27,24 +27,22 @@ func divide(float a, float b) where { b != 0.0 } returns float { return a }
             (logic_and_expression
               (equality_expression
                 (comparison_expression
-                  (range_expression
-                    (sum_expression
-                      (product_expression
-                        (power_expression
-                          (unary_expression
-                            (postfix_expression
-                              (primary_expression
-                                (identifier)))))))))
+                  (sum_expression
+                    (product_expression
+                      (power_expression
+                        (unary_expression
+                          (postfix_expression
+                            (primary_expression
+                              (identifier))))))))
                 (comparison_expression
-                  (range_expression
-                    (sum_expression
-                      (product_expression
-                        (power_expression
-                          (unary_expression
-                            (postfix_expression
-                              (primary_expression
-                                (literal
-                                  (float_literal)))))))))))))))
+                  (sum_expression
+                    (product_expression
+                      (power_expression
+                        (unary_expression
+                          (postfix_expression
+                            (primary_expression
+                              (literal
+                                (float_literal))))))))))))))
       (type_name
         (type_path
           (identifier)))
@@ -56,14 +54,13 @@ func divide(float a, float b) where { b != 0.0 } returns float { return a }
                 (logic_and_expression
                   (equality_expression
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier)))))))))))))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier))))))))))))))))))
 
 ==================
 Where clauses on fields and class invariants
@@ -92,76 +89,6 @@ class Server {
               (logic_and_expression
                 (equality_expression
                   (comparison_expression
-                    (range_expression
-                      (sum_expression
-                        (product_expression
-                          (power_expression
-                            (unary_expression
-                              (postfix_expression
-                                (primary_expression
-                                  (literal
-                                    (int_literal))))))))))))))
-          (where_clause
-            (expression
-              (logic_or_expression
-                (logic_and_expression
-                  (equality_expression
-                    (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier))))))))
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (literal
-                                      (int_literal))))))))))))))
-            (expression
-              (logic_or_expression
-                (logic_and_expression
-                  (equality_expression
-                    (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier))))))))
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (literal
-                                      (int_literal)))))))))))))))))
-      (where_clause
-        (expression
-          (logic_or_expression
-            (logic_and_expression
-              (equality_expression
-                (comparison_expression
-                  (range_expression
-                    (sum_expression
-                      (product_expression
-                        (power_expression
-                          (unary_expression
-                            (postfix_expression
-                              (primary_expression
-                                (identifier)))))))))
-                (comparison_expression
-                  (range_expression
                     (sum_expression
                       (product_expression
                         (power_expression
@@ -169,7 +96,70 @@ class Server {
                             (postfix_expression
                               (primary_expression
                                 (literal
-                                  (int_literal))))))))))))))))))
+                                  (int_literal)))))))))))))
+          (where_clause
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier)))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal)))))))))))))
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier)))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal))))))))))))))))
+      (where_clause
+        (expression
+          (logic_or_expression
+            (logic_and_expression
+              (equality_expression
+                (comparison_expression
+                  (sum_expression
+                    (product_expression
+                      (power_expression
+                        (unary_expression
+                          (postfix_expression
+                            (primary_expression
+                              (identifier))))))))
+                (comparison_expression
+                  (sum_expression
+                    (product_expression
+                      (power_expression
+                        (unary_expression
+                          (postfix_expression
+                            (primary_expression
+                              (literal
+                                (int_literal)))))))))))))))))
 
 ==================
 Where clause on an interface method
@@ -200,24 +190,22 @@ interface Divider {
                 (logic_and_expression
                   (equality_expression
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier)))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier))))))))
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (literal
-                                      (int_literal)))))))))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal))))))))))))))
           (type_name
             (type_path
               (identifier))))))))
@@ -254,45 +242,41 @@ enum Status {
                 (logic_and_expression
                   (equality_expression
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier))))))))
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (literal
-                                      (int_literal))))))))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier)))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal)))))))))))))
             (expression
               (logic_or_expression
                 (logic_and_expression
                   (equality_expression
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (identifier))))))))
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (literal
-                                      (int_literal))))))))))))))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier)))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal)))))))))))))))))))
 
 ==================
 Where clause on a lambda
@@ -311,59 +295,55 @@ auto bounded = func(int x) where { x < 100 } returns int { return x }
           (logic_and_expression
             (equality_expression
               (comparison_expression
-                (range_expression
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (primary_expression
-                              (lambda_expression
-                                (param_list
-                                  (parameter
-                                    (type_name
-                                      (type_path
-                                        (identifier)))
-                                    (identifier)))
-                                (where_clause
-                                  (expression
-                                    (logic_or_expression
-                                      (logic_and_expression
-                                        (equality_expression
-                                          (comparison_expression
-                                            (range_expression
+                (sum_expression
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (primary_expression
+                            (lambda_expression
+                              (param_list
+                                (parameter
+                                  (type_name
+                                    (type_path
+                                      (identifier)))
+                                  (identifier)))
+                              (where_clause
+                                (expression
+                                  (logic_or_expression
+                                    (logic_and_expression
+                                      (equality_expression
+                                        (comparison_expression
+                                          (sum_expression
+                                            (product_expression
+                                              (power_expression
+                                                (unary_expression
+                                                  (postfix_expression
+                                                    (primary_expression
+                                                      (identifier)))))))
+                                          (sum_expression
+                                            (product_expression
+                                              (power_expression
+                                                (unary_expression
+                                                  (postfix_expression
+                                                    (primary_expression
+                                                      (literal
+                                                        (int_literal))))))))))))))
+                              (type_name
+                                (type_path
+                                  (identifier)))
+                              (block
+                                (statement
+                                  (return_statement
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
                                               (sum_expression
                                                 (product_expression
                                                   (power_expression
                                                     (unary_expression
                                                       (postfix_expression
                                                         (primary_expression
-                                                          (identifier))))))))
-                                            (range_expression
-                                              (sum_expression
-                                                (product_expression
-                                                  (power_expression
-                                                    (unary_expression
-                                                      (postfix_expression
-                                                        (primary_expression
-                                                          (literal
-                                                            (int_literal)))))))))))))))
-                                (type_name
-                                  (type_path
-                                    (identifier)))
-                                (block
-                                  (statement
-                                    (return_statement
-                                      (expression
-                                        (logic_or_expression
-                                          (logic_and_expression
-                                            (equality_expression
-                                              (comparison_expression
-                                                (range_expression
-                                                  (sum_expression
-                                                    (product_expression
-                                                      (power_expression
-                                                        (unary_expression
-                                                          (postfix_expression
-                                                            (primary_expression
-                                                              (identifier))))))))))))))))))))))))))))))))
+                                                          (identifier))))))))))))))))))))))))))))))
