@@ -17,7 +17,12 @@ body:
         - label: Neovim (nvim-treesitter)
         - label: Helix
         - label: Emacs
-        - label: Other (say which in the description)
+        - label: Other
+  - type: input
+    id: other_editor
+    attributes:
+      label: Other editor
+      description: Name and version, if you checked Other.
   - type: textarea
     id: repro
     attributes:
