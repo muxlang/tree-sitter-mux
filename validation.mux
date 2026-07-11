@@ -28,7 +28,7 @@ if x > 40 {
     print("Low")
 }
 
-for i in 0..10 {
+for int i in range(0, 10) {
     print(i)
 }
 

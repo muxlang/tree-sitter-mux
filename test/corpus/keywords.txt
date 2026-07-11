@@ -21,14 +21,13 @@ common func build() returns string { return none }
                 (logic_and_expression
                   (equality_expression
                     (comparison_expression
-                      (range_expression
-                        (sum_expression
-                          (product_expression
-                            (power_expression
-                              (unary_expression
-                                (postfix_expression
-                                  (primary_expression
-                                    (keyword_constant)))))))))))))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (keyword_constant))))))))))))))))))
 
 ==================
 Control
@@ -46,15 +45,14 @@ if true { break } else { continue }
           (logic_and_expression
             (equality_expression
               (comparison_expression
-                (range_expression
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (primary_expression
-                              (literal
-                                (boolean))))))))))))))
+                (sum_expression
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (primary_expression
+                            (literal
+                              (boolean)))))))))))))
       (block
         (statement
           (break_statement)))
@@ -79,30 +77,28 @@ print("x")
           (logic_and_expression
             (equality_expression
               (comparison_expression
-                (range_expression
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (call_expression
-                              function: (call_target
-                                (identifier))
-                              (argument_list
-                                (expression
-                                  (logic_or_expression
-                                    (logic_and_expression
-                                      (equality_expression
-                                        (comparison_expression
-                                          (range_expression
-                                            (sum_expression
-                                              (product_expression
-                                                (power_expression
-                                                  (unary_expression
-                                                    (postfix_expression
-                                                      (primary_expression
-                                                        (literal
-                                                          (string_literal))))))))))))))))))))))))))))))
+                (sum_expression
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (call_expression
+                            function: (call_target
+                              (identifier))
+                            (argument_list
+                              (expression
+                                (logic_or_expression
+                                  (logic_and_expression
+                                    (equality_expression
+                                      (comparison_expression
+                                        (sum_expression
+                                          (product_expression
+                                            (power_expression
+                                              (unary_expression
+                                                (postfix_expression
+                                                  (primary_expression
+                                                    (literal
+                                                      (string_literal))))))))))))))))))))))))))))
 
 ==================
 Literals
@@ -120,12 +116,11 @@ Literals
           (logic_and_expression
             (equality_expression
               (comparison_expression
-                (range_expression
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (primary_expression
-                              (literal
-                                (int_literal)))))))))))))))))
+                (sum_expression
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (primary_expression
+                            (literal
+                              (int_literal))))))))))))))))

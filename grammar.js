@@ -318,13 +318,8 @@ module.exports = grammar({
     )),
 
     comparison_expression: $ => prec.left(seq(
-      $.range_expression,
-      repeat(seq(choice_of(syntax.operators.comparison.map(op => op.symbol)), $.range_expression))
-    )),
-
-    range_expression: $ => prec.left(seq(
       $.sum_expression,
-      repeat(seq('..', $.sum_expression))
+      repeat(seq(choice_of(syntax.operators.comparison.map(op => op.symbol)), $.sum_expression))
     )),
 
     sum_expression: $ => prec.left(seq(
