@@ -1,0 +1,25 @@
+name: Grammar sync
+description: Track syncing the vendored syntax-matrix.json from mux-syntax-highlighting
+labels: ["needs triage", "syntax-matrix"]
+assignees: ["DerekCorniello"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Link to the spec change issue or PR in mux-syntax-highlighting.
+    validations:
+      required: true
+  - type: checkboxes
+    id: state
+    attributes:
+      label: Current state
+      options:
+        - label: syntax-matrix.json updated in this repo
+        - label: grammar.js regenerated
+        - label: queries/highlights.scm updated
+        - label: tree-sitter test passes
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
