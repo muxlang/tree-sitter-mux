@@ -26,12 +26,13 @@ change.
 - **Range syntax**: Fixed the range syntax in `validation.mux` and removed the
   invented `range_expression` rule that did not match the language (#9).
 
-<!-- ===========================================================
-     Independent multi-repo versioning begins at 0.5.0.
-     Entries below are inherited from the pre-split (monorepo-era)
-     compiler changelog and are shared history, not specific to
-     tree-sitter-mux.
-     =========================================================== -->
+---
+
+> **Independent multi-repo versioning begins at 0.5.0.** Entries below are inherited
+> from the pre-split (monorepo-era) compiler changelog and are shared history, not
+> specific to `tree-sitter-mux`.
+
+---
 
 ## [0.4.1] - 2026-06-27
 
