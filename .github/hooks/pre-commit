@@ -1,22 +1,21 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Mirrors tree-sitter-mux CI (.github/workflows/ci.yml) grammar job: regenerate
 # the parser from grammar.js and run the corpus tests. The canonical
 # syntax-matrix drift check (a network fetch) stays CI-only. Same spirit as the
 # other muxlang hooks: run the fast local gate before committing.
 
 HAS_GRAMMAR=false
-# Read staged paths line by line (IFS= read) so a path containing spaces is not
-# word-split and mis-skipped. A here-doc (not a pipe) keeps the loop in this
-# shell so HAS_GRAMMAR persists.
-while IFS= read -r file; do
+# Read staged paths NUL-delimited (-z) so paths with spaces, tabs, quotes,
+# backslashes, newlines, or non-ASCII bytes are matched literally instead of
+# word-split or read in Git's quoted/escaped form. Process substitution keeps
+# the loop in this shell so HAS_GRAMMAR persists.
+while IFS= read -r -d '' file; do
   case "$file" in
     grammar.js|syntax-matrix.json|tree-sitter.json|queries/*|test/*)
       HAS_GRAMMAR=true
       ;;
   esac
-done <<EOF
-$(git diff --cached --name-only)
-EOF
+done < <(git diff --cached --name-only -z)
 
 if [ "$HAS_GRAMMAR" = false ]; then
   echo "No grammar files changed, skipping checks."
