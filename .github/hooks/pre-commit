@@ -1,0 +1,49 @@
+#!/bin/sh
+# Mirrors tree-sitter-mux CI (.github/workflows/ci.yml) grammar job: regenerate
+# the parser from grammar.js and run the corpus tests. The canonical
+# syntax-matrix drift check (a network fetch) stays CI-only. Same spirit as the
+# other muxlang hooks: run the fast local gate before committing.
+
+STAGED_FILES=$(git diff --cached --name-only)
+
+HAS_GRAMMAR=false
+for file in $STAGED_FILES; do
+  case "$file" in
+    grammar.js|syntax-matrix.json|tree-sitter.json|queries/*|test/*)
+      HAS_GRAMMAR=true
+      ;;
+  esac
+done
+
+if [ "$HAS_GRAMMAR" = false ]; then
+  echo "No grammar files changed, skipping checks."
+  exit 0
+fi
+
+if ! command -v tree-sitter >/dev/null 2>&1; then
+  echo "tree-sitter CLI not found. Install the pinned version with:"
+  echo "  npm install -g tree-sitter-cli@0.26.8"
+  exit 1
+fi
+
+# Regenerating without clearing the compiled grammar cache lets 'tree-sitter
+# test' load a stale parser and pass falsely. Remove it so the test compiles the
+# freshly generated parser.
+rm -f "$HOME/.cache/tree-sitter/lib/mux.so"
+
+echo "Generating parser..."
+if ! tree-sitter generate grammar.js; then
+  echo ""
+  echo "Grammar generation failed. Fix grammar.js before committing."
+  exit 1
+fi
+echo "Generate OK"
+
+echo ""
+echo "Running corpus tests..."
+if ! tree-sitter test; then
+  echo ""
+  echo "Corpus tests failed. Fix the grammar or update test expectations."
+  exit 1
+fi
+echo "Tests OK"
