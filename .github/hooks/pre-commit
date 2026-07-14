@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Mirrors tree-sitter-mux CI (.github/workflows/ci.yml) grammar job: regenerate
+# the parser from grammar.js and run the corpus tests. The canonical
+# syntax-matrix drift check (a network fetch) stays CI-only. Same spirit as the
+# other muxlang hooks: run the fast local gate before committing.
+
+HAS_GRAMMAR=false
+# Read staged paths NUL-delimited (-z) so paths with spaces, tabs, quotes,
+# backslashes, newlines, or non-ASCII bytes are matched literally instead of
+# word-split or read in Git's quoted/escaped form. Process substitution keeps
+# the loop in this shell so HAS_GRAMMAR persists.
+while IFS= read -r -d '' file; do
+  case "$file" in
+    grammar.js|syntax-matrix.json|tree-sitter.json|queries/*|test/*)
+      HAS_GRAMMAR=true
+      ;;
+  esac
+done < <(git diff --cached --name-only -z)
+
+if [ "$HAS_GRAMMAR" = false ]; then
+  echo "No grammar files changed, skipping checks."
+  exit 0
+fi
+
+if ! command -v tree-sitter >/dev/null 2>&1; then
+  echo "tree-sitter CLI not found. Install the pinned version with:"
+  echo "  npm install -g tree-sitter-cli@0.26.8"
+  exit 1
+fi
+
+# Compile the parser into a fresh, isolated directory instead of deleting one
+# hard-coded cache path. A reused compiled parser makes 'tree-sitter test' pass
+# against a stale grammar, and the real cache location varies by OS and by
+# XDG_CACHE_HOME / TREE_SITTER_LIBDIR - an isolated libdir is the portable way to
+# guarantee a clean build regardless of the developer's environment.
+TREE_SITTER_LIBDIR="$(mktemp -d)"
+export TREE_SITTER_LIBDIR
+trap 'rm -rf "$TREE_SITTER_LIBDIR"' EXIT
+
+echo "Generating parser..."
+if ! tree-sitter generate grammar.js; then
+  echo ""
+  echo "Grammar generation failed. Fix grammar.js before committing."
+  exit 1
+fi
+echo "Generate OK"
+
+echo ""
+echo "Running corpus tests..."
+if ! tree-sitter test; then
+  echo ""
+  echo "Corpus tests failed. Fix the grammar or update test expectations."
+  exit 1
+fi
+echo "Tests OK"
