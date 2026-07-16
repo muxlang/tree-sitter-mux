@@ -42,7 +42,9 @@ See [INTEGRATION.md](INTEGRATION.md) for copy-pasteable setup. In short:
 - **Helix:** `tree-sitter generate`, build `mux.so`, drop it and
   `queries/highlights.scm` into your Helix runtime, and add the language block
   (ready-made in [mux-syntax-highlighting `editor-support/helix`](https://github.com/muxlang/mux-syntax-highlighting/blob/main/editor-support/helix/languages.toml)).
-- **Emacs:** `treesit-install-language-grammar` pointing at this repo.
+- **Emacs:** build the library and drop `libtree-sitter-mux.so` into
+  `~/.emacs.d/tree-sitter/`. `treesit-install-language-grammar` does not work
+  here: it compiles `src/parser.c` directly and this repo does not commit one.
 
 A zero-config install (nvim-treesitter registry + Helix upstream) is planned
 follow-up, tracked in [mux-context](https://github.com/muxlang/mux-context).
