@@ -29,6 +29,15 @@ jobs:
       - run: npm install -g tree-sitter-cli@0.26.8
       - name: Generate parser
         run: tree-sitter generate grammar.js
+      - name: Verify the committed parser matches grammar.js
+        # Consumers compile the committed src/parser.c rather than generating it,
+        # so a stale copy would ship a parser that does not match this grammar.
+        run: |
+          set -euo pipefail
+          if ! git diff --exit-code -- src/; then
+            echo "::error::Committed parser is stale. Run 'tree-sitter generate' and commit src/."
+            exit 1
+          fi
       - name: Corpus tests
         run: tree-sitter test
 
