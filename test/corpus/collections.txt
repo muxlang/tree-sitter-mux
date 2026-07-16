@@ -633,6 +633,87 @@ func main() returns void {
           (return_statement))))))
 
 ==================
+Method call on a tuple literal
+==================
+
+func main() returns void {
+    print((42, "hello").to_string())
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (tuple_literal
+                                                                  (expression
+                                                                    (logic_or_expression
+                                                                      (logic_and_expression
+                                                                        (equality_expression
+                                                                          (comparison_expression
+                                                                            (sum_expression
+                                                                              (product_expression
+                                                                                (power_expression
+                                                                                  (unary_expression
+                                                                                    (postfix_expression
+                                                                                      (primary_expression
+                                                                                        (literal
+                                                                                          (int_literal)))))))))))))
+                                                                  (collection_elements
+                                                                    (expression
+                                                                      (logic_or_expression
+                                                                        (logic_and_expression
+                                                                          (equality_expression
+                                                                            (comparison_expression
+                                                                              (sum_expression
+                                                                                (product_expression
+                                                                                  (power_expression
+                                                                                    (unary_expression
+                                                                                      (postfix_expression
+                                                                                        (primary_expression
+                                                                                          (literal
+                                                                                            (string_literal))))))))))))))))
+                                                              (identifier))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
 Tuple literal
 ==================
 

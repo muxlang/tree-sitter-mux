@@ -417,6 +417,7 @@ module.exports = grammar({
       $.list_literal,
       $.set_literal,
       $.map_literal,
+      $.tuple_literal,
       $.literal,
       $.keyword_constant,
       $.type_name

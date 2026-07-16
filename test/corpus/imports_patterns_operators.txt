@@ -608,6 +608,7 @@ func main() returns void {
     auto b = .5
     auto c = 42e5
     auto d = 42.5e-3
+    auto e = 1_000.5
     return
 }
 
@@ -669,6 +670,94 @@ func main() returns void {
                                 (primary_expression
                                   (literal
                                     (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+A trailing dot is not a float
+==================
+
+func main() returns void {
+    print(42.to_string())
+    auto ok = 42.0
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (literal
+                                                                  (int_literal)))
+                                                              (identifier))))))))))))))))))))))))))))
         (declaration
           (auto_declaration
             (identifier)

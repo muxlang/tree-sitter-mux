@@ -1355,6 +1355,10 @@
           "named": true
         },
         {
+          "type": "tuple_literal",
+          "named": true
+        },
+        {
           "type": "type_name",
           "named": true
         }

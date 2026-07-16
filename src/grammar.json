@@ -2061,6 +2061,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "tuple_literal"
+        },
+        {
+          "type": "SYMBOL",
           "name": "literal"
         },
         {
