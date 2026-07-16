@@ -1,10 +1,22 @@
+<div align="center">
+
+<img src="https://mux-lang.dev/img/mux-logo.png" alt="Mux Logo" width="120">
+
 # tree-sitter-mux
 
-[Tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the
-[Mux programming language](https://github.com/muxlang). Powers parser-based editor
-tooling: Neovim (nvim-treesitter), Helix, and Emacs.
+**Tree-sitter grammar for [Mux](https://github.com/muxlang) (Neovim, Helix, Emacs)**
 
-`grammar.js` lives at the repo root, as the tree-sitter ecosystem expects.
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE)
+[![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=muxlang_tree-sitter-mux&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=muxlang_tree-sitter-mux)
+
+</div>
+
+[Tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the Mux
+programming language. Powers parser-based editor tooling: Neovim
+(nvim-treesitter), Helix, and Emacs. `grammar.js` lives at the repo root, as the
+tree-sitter ecosystem expects.
+
+---
 
 ## Layout
 
@@ -18,6 +30,8 @@ tooling: Neovim (nvim-treesitter), Helix, and Emacs.
 - `queries/highlights.scm` - highlight queries (generated from the spec, vendored).
 - `test/` - corpus tests run by `tree-sitter test`.
 
+---
+
 ## Development
 
 ```bash
@@ -28,6 +42,8 @@ tree-sitter parse <file.mux>      # parse a file
 ```
 
 CI runs `tree-sitter generate` + `tree-sitter test` plus a SonarQube scan.
+
+---
 
 ## Editor installation
 
@@ -40,14 +56,16 @@ See [INTEGRATION.md](INTEGRATION.md) for copy-pasteable setup. In short:
   `generate = true` (main) or `requires_generate_from_grammar = true` (master),
   add the `.mux` filetype, then `:TSInstall mux`.
 - **Helix:** `tree-sitter generate`, build `mux.so`, drop it and
-  `queries/highlights.scm` into your Helix runtime, and add the language block
-  (ready-made in [mux-syntax-highlighting `editor-support/helix`](https://github.com/muxlang/mux-syntax-highlighting/blob/main/editor-support/helix/languages.toml)).
+  `queries/highlights.scm` into your Helix runtime, then add the language block
+  from [INTEGRATION.md](INTEGRATION.md).
 - **Emacs:** build the library and drop `libtree-sitter-mux.so` into
   `~/.emacs.d/tree-sitter/`. `treesit-install-language-grammar` does not work
   here: it compiles `src/parser.c` directly and this repo does not commit one.
 
 A zero-config install (nvim-treesitter registry + Helix upstream) is planned
 follow-up, tracked in [mux-context](https://github.com/muxlang/mux-context).
+
+---
 
 ## Compatibility
 
@@ -56,12 +74,19 @@ commit SHA. See `COMPATIBILITY` notes in
 [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting) for
 language-version mapping.
 
+---
+
 ## Related repositories
 
-- [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting) - canonical syntax spec (vendored here) + TextMate/VSCode tooling
-- [mux-compiler](https://github.com/muxlang/mux-compiler) - the language/compiler
-- [mux-context](https://github.com/muxlang/mux-context) - cross-repo architecture, design notes, glossary, releases
+| Repo | What it is |
+|------|------------|
+| [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting) | Canonical syntax spec (vendored here) + TextMate/VSCode tooling |
+| [mux-compiler](https://github.com/muxlang/mux-compiler) | The language, compiler, and CLI |
+| [mux-website](https://github.com/muxlang/mux-website) | Docs site (mux-lang.dev) and playground |
+| [mux-context](https://github.com/muxlang/mux-context) | Cross-repo architecture, design rationale, glossary, releases |
+
+---
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) - Maintained by [Derek Corniello](https://github.com/DerekCorniello)
