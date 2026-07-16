@@ -30,6 +30,7 @@
 (trait_clause "is" @keyword @keyword.operator)
 (where_clause "where" @keyword @keyword.declaration)
 (import_alias "as" @keyword @keyword.operator)
+(comparison_expression "in" @keyword @keyword.operator)
 (keyword_constant) @constant @constant.language
 
 ;; Numbers
@@ -47,6 +48,37 @@
 
 ;; Delimiters
 ["(" ")" "{" "}" "[" "]" ","] @punctuation.bracket
+
+;; Operators
+;; Scoped per rule rather than matched bare, so that `<` and `>` in generics
+;; (`map<string, int>`) stay brackets instead of being painted as comparisons.
+(assignment_expression operator: _ @operator)
+;; `=` in a binding is the same glyph to a reader, and the TextMate grammar
+;; (being regex-based) colours it, so match that rather than leave it bare.
+(auto_declaration "=" @operator)
+(typed_declaration "=" @operator)
+(const_declaration "=" @operator)
+(field_declaration "=" @operator)
+(parameter "=" @operator)
+(logic_or_expression "||" @operator)
+(logic_and_expression "&&" @operator)
+(equality_expression ["==" "!="] @operator)
+(comparison_expression ["<" "<=" ">" ">="] @operator)
+(sum_expression ["+" "-"] @operator)
+(product_expression ["*" "/" "%"] @operator)
+(power_expression "**" @operator)
+(unary_expression ["!" "-" "&" "*" "++" "--"] @operator)
+
+;; Collection literals
+;; The colon separates a map key from its value, and stands alone in `{:}`.
+(map_entry ":" @punctuation.delimiter)
+(map_literal ":" @punctuation.delimiter)
+
+;; Patterns
+(rest_pattern ".." @operator)
+
+;; Imports
+(import_wildcard "*" @operator)
 
 ;; Member access
 (field_access field: (identifier) @property)
