@@ -68,10 +68,12 @@ them up from the installed parser. If you manage queries by hand, copy
 
 ## Helix
 
-Helix builds grammars from source but does not run `tree-sitter generate`, so you
-generate the parser and hand Helix the built grammar plus the queries.
+Helix's `hx --grammar build` compiles `src/parser.c` from the grammar source; it
+does not run `tree-sitter generate`. Because this repo does not commit
+`src/parser.c`, the automatic path cannot work here - build the grammar yourself
+and hand Helix the result.
 
-1. Build the grammar:
+1. Build the grammar and install it into Helix's runtime:
 
 ```bash
 git clone https://github.com/muxlang/tree-sitter-mux
@@ -89,9 +91,11 @@ mkdir -p ~/.config/helix/runtime/queries/mux
 cp queries/highlights.scm ~/.config/helix/runtime/queries/mux/highlights.scm
 ```
 
-3. Register the language in `~/.config/helix/languages.toml`. A ready-to-copy
-   block lives in
-   [mux-syntax-highlighting `editor-support/helix/languages.toml`](https://github.com/muxlang/mux-syntax-highlighting/blob/main/editor-support/helix/languages.toml):
+3. Register the language in `~/.config/helix/languages.toml`. Note there is no
+   `[[grammar]]` block: Helix resolves `grammar = "mux"` to the `mux.so` you just
+   placed in `runtime/grammars/`. Adding a `[[grammar]]` source here would opt
+   into `hx --grammar build`, which would re-clone and overwrite that file - and
+   then fail, since there is no committed `src/parser.c` to compile.
 
 ```toml
 [[language]]
@@ -102,25 +106,38 @@ file-types = ["mux"]
 comment-token = "//"
 block-comment-tokens = { start = "/*", end = "*/" }
 grammar = "mux"
-
-[[grammar]]
-name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "main" }
 ```
 
 Run `hx --health mux` to confirm the grammar and queries are found.
 
+Re-run step 1 to pick up grammar updates; pin to a specific commit
+(`git checkout <sha>`) if you want a reproducible setup rather than whatever is
+on `main`.
+
 ## Emacs (treesit)
 
-```elisp
-(add-to-list
- 'treesit-language-source-alist
- '(mux "https://github.com/muxlang/tree-sitter-mux"))
-(treesit-install-language-grammar 'mux)
+`treesit-install-language-grammar` clones the repo and compiles `src/parser.c`
+directly - it never invokes the tree-sitter CLI. With no committed `src/parser.c`
+it fails, so build the library yourself and drop it where Emacs looks for
+grammars:
+
+```bash
+git clone https://github.com/muxlang/tree-sitter-mux
+cd tree-sitter-mux
+tree-sitter generate
+cc -shared -fPIC -I src src/parser.c -o libtree-sitter-mux.so
+mkdir -p ~/.emacs.d/tree-sitter
+cp libtree-sitter-mux.so ~/.emacs.d/tree-sitter/
 ```
 
-`treesit-install-language-grammar` runs the tree-sitter CLI to generate and
-compile the parser, so the CLI prerequisite above applies here too.
+Emacs searches `treesit-extra-load-path`, then `~/.emacs.d/tree-sitter/`, for a
+`libtree-sitter-<lang>` library. Confirm it loaded with:
+
+```elisp
+(treesit-ready-p 'mux)
+```
+
+Copy `queries/highlights.scm` into your own major-mode setup as needed.
 
 ## Validation
 
