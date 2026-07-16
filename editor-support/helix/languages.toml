@@ -1,0 +1,22 @@
+# Drop-in Helix config for Mux. Append to ~/.config/helix/languages.toml, then:
+#
+#   hx --grammar fetch && hx --grammar build
+#
+# `rev` re-resolves on every build while it points at a branch; pin it to a
+# commit SHA for a reproducible setup.
+#
+# Helix does not read queries/ out of the grammar repo, so install the
+# highlights separately - see INTEGRATION.md.
+
+[[language]]
+name = "mux"
+scope = "source.mux"
+injection-regex = "mux"
+file-types = ["mux"]
+comment-token = "//"
+block-comment-tokens = { start = "/*", end = "*/" }
+grammar = "mux"
+
+[[grammar]]
+name = "mux"
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "main" }

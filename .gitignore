@@ -2,7 +2,9 @@ node_modules/
 build/
 *.log
 *.wasm
-# tree-sitter generates these from grammar.js (`tree-sitter generate`)
-/src/parser.c
-/src/grammar.json
-/src/node-types.json
+
+# src/parser.c and friends are generated from grammar.js but ARE committed:
+# every downstream consumer (nvim-treesitter, Helix, Emacs treesit) compiles
+# src/parser.c directly and none of them run `tree-sitter generate`, so leaving
+# it out makes the grammar uninstallable without the CLI. CI regenerates and
+# fails if the committed copy has drifted - see .github/workflows/ci.yml.

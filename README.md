@@ -36,7 +36,7 @@ tree-sitter ecosystem expects.
 
 ```bash
 npm install -g tree-sitter-cli@0.26.8
-tree-sitter generate grammar.js   # produces src/parser.c (gitignored)
+tree-sitter generate grammar.js   # regenerates src/parser.c (committed - commit it)
 tree-sitter test                  # run corpus tests
 tree-sitter parse <file.mux>      # parse a file
 ```
@@ -49,18 +49,14 @@ CI runs `tree-sitter generate` + `tree-sitter test` plus a SonarQube scan.
 
 See [INTEGRATION.md](INTEGRATION.md) for copy-pasteable setup. In short:
 
-- **Prerequisite:** the tree-sitter CLI (`npm install -g tree-sitter-cli@0.26.8`).
-  This repo does not commit the generated parser, so each editor regenerates it
-  from `grammar.js` at install time.
-- **Neovim (nvim-treesitter):** register `mux` as a custom parser with
-  `generate = true` (main) or `requires_generate_from_grammar = true` (master),
-  add the `.mux` filetype, then `:TSInstall mux`.
-- **Helix:** `tree-sitter generate`, build `mux.so`, drop it and
-  `queries/highlights.scm` into your Helix runtime, then add the language block
-  from [INTEGRATION.md](INTEGRATION.md).
-- **Emacs:** build the library and drop `libtree-sitter-mux.so` into
-  `~/.emacs.d/tree-sitter/`. `treesit-install-language-grammar` does not work
-  here: it compiles `src/parser.c` directly and this repo does not commit one.
+- **No prerequisite.** The generated parser is committed, so editors compile it
+  directly and none of them need the tree-sitter CLI.
+- **Neovim (nvim-treesitter):** register `mux` as a custom parser, add the `.mux`
+  filetype, then `:TSInstall mux`.
+- **Helix:** add the `[[language]]` and `[[grammar]]` blocks, then
+  `hx --grammar fetch && hx --grammar build`, and copy `queries/highlights.scm`
+  into the Helix runtime.
+- **Emacs:** `treesit-install-language-grammar` pointing at this repo.
 
 A zero-config install (nvim-treesitter registry + Helix upstream) is planned
 follow-up, tracked in [mux-context](https://github.com/muxlang/mux-context).

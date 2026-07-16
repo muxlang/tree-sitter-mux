@@ -27,8 +27,17 @@ sync by hand. Do not let this copy drift.
 ## Generated artifacts
 
 `tree-sitter generate` produces `src/parser.c`, `src/grammar.json`,
-`src/node-types.json` - these are gitignored and regenerated; do not commit them.
-`queries/highlights.scm` is a vendored generated artifact (committed).
+`src/node-types.json`. These ARE committed, deliberately: every consumer
+(nvim-treesitter, Helix, Emacs treesit) compiles `src/parser.c` directly and none
+of them run `tree-sitter generate`, so leaving them out makes the grammar
+uninstallable without the CLI. It is also a precondition for the nvim-treesitter
+registry.
+
+The cost is that they must not drift from `grammar.js`: **regenerate and commit
+`src/` in the same change as any grammar edit.** CI regenerates and fails on any
+diff under `src/`.
+
+`queries/highlights.scm` is maintained here (committed).
 
 ## Development
 

@@ -17,6 +17,8 @@ module.exports = grammar({
     [$.primary_expression, $.type_path],
     [$.source_file, $.expression_statement],
     [$.block, $.expression_statement],
+    [$.block, $.expression_statement, $.collection_elements],
+    [$.expression_statement],
     [$.identifier_pattern, $.enum_variant_pattern],
     [$.if_statement, $.guard_clause],
     [$.match_arm, $.statement],
@@ -64,7 +66,9 @@ module.exports = grammar({
       $.expression_statement,
     ),
 
-    block: $ => seq(
+    // Outranks set_literal so a bare `{...}` in statement position stays a block.
+    // In expression position a block is not legal, so the literal wins there.
+    block: $ => prec(1, seq(
       '{',
       repeat(choice(
         $.declaration,
@@ -74,7 +78,7 @@ module.exports = grammar({
         $.block_comment
       )),
       '}'
-    ),
+    )),
 
     function_declaration: $ => prec.right(seq(
       optional('common'),
@@ -317,9 +321,14 @@ module.exports = grammar({
       repeat(seq(choice_of(syntax.operators.comparison.filter(op => op.symbol === '==' || op.symbol === '!=').map(op => op.symbol)), $.comparison_expression))
     )),
 
+    // `in` is a keyword rather than an entry in operators.comparison, but it
+    // binds at this level: looser than `+`, tighter than `==`.
     comparison_expression: $ => prec.left(seq(
       $.sum_expression,
-      repeat(seq(choice_of(syntax.operators.comparison.map(op => op.symbol)), $.sum_expression))
+      repeat(seq(
+        choice(choice_of(syntax.operators.comparison.map(op => op.symbol)), 'in'),
+        $.sum_expression
+      ))
     )),
 
     sum_expression: $ => prec.left(seq(
@@ -383,7 +392,10 @@ module.exports = grammar({
       $.identifier,
       $.underscore,
       $.grouped_expression,
+      $.tuple_literal,
       $.list_literal,
+      $.set_literal,
+      $.map_literal,
       $.lambda_expression
     ),
 
@@ -403,12 +415,56 @@ module.exports = grammar({
       $.field_access,
       $.index_access,
       $.list_literal,
+      $.set_literal,
+      $.map_literal,
+      $.tuple_literal,
+      $.literal,
+      $.keyword_constant,
       $.type_name
     ),
 
     grouped_expression: $ => seq('(', $.expression, ')'),
 
-    list_literal: $ => seq('[', optional($.argument_list), ']'),
+    list_literal: $ => seq('[', optional($.collection_elements), ']'),
+
+    // Collection literals take a trailing comma; call arguments do not, so this
+    // is deliberately not shared with argument_list.
+    collection_elements: $ => seq(
+      $.expression,
+      repeat(seq(',', $.expression)),
+      optional(',')
+    ),
+
+    tuple_literal: $ => seq(
+      '(',
+      $.expression,
+      ',',
+      optional($.collection_elements),
+      ')'
+    ),
+
+    // `{}` is the empty set and `{:}` the empty map; a non-empty literal is told
+    // apart by whether the first element is followed by `:`.
+    set_literal: $ => seq('{', optional($.collection_elements), '}'),
+
+    map_literal: $ => seq(
+      '{',
+      choice(
+        ':',
+        seq(
+          $.map_entry,
+          repeat(seq(',', $.map_entry)),
+          optional(',')
+        )
+      ),
+      '}'
+    ),
+
+    map_entry: $ => seq(
+      field('key', $.expression),
+      ':',
+      field('value', $.expression)
+    ),
 
     argument_list: $ => seq(
       $.expression,
@@ -500,12 +556,21 @@ module.exports = grammar({
       optional(seq('(', optional($.pattern_list), ')'))
     ),
 
+    // A rest element is comma-separated like any other: `[first, ..rest]`.
+    // `[first ..rest]` is not valid Mux. Position of the rest element is left to
+    // the compiler rather than encoded here, which keeps this conflict-free.
     list_pattern: $ => seq(
       '[',
-      optional($.pattern_list),
-      optional(seq('..', optional($.pattern))),
+      optional(seq(
+        $.list_pattern_element,
+        repeat(seq(',', $.list_pattern_element))
+      )),
       ']'
     ),
+
+    list_pattern_element: $ => choice($.pattern, $.rest_pattern),
+
+    rest_pattern: $ => seq('..', optional($.pattern)),
 
     pattern_list: $ => seq(
       $.pattern,
@@ -514,8 +579,11 @@ module.exports = grammar({
 
     module_path: $ => seq(
       $.identifier,
-      repeat(seq('.', $.identifier))
+      repeat(seq('.', $.identifier)),
+      optional($.import_wildcard)
     ),
+
+    import_wildcard: $ => seq('.', '*'),
 
     literal: $ => choice(
       $.int_literal,

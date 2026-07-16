@@ -1,0 +1,778 @@
+==================
+Wildcard import
+==================
+
+import std.dsa.*
+
+---
+
+(source_file
+  (declaration
+    (import_statement
+      (module_path
+        (identifier)
+        (identifier)
+        (import_wildcard)))))
+
+==================
+Nested wildcard import
+==================
+
+import std.*
+
+---
+
+(source_file
+  (declaration
+    (import_statement
+      (module_path
+        (identifier)
+        (import_wildcard)))))
+
+==================
+Plain import is unaffected
+==================
+
+import shapes
+
+---
+
+(source_file
+  (declaration
+    (import_statement
+      (module_path
+        (identifier)))))
+
+==================
+Wildcard import with alias
+==================
+
+import std.assert.* as a
+
+---
+
+(source_file
+  (declaration
+    (import_statement
+      (module_path
+        (identifier)
+        (identifier)
+        (import_wildcard))
+      (import_alias
+        (identifier)))))
+
+==================
+Rest pattern after a leading element
+==================
+
+func main() returns void {
+    match nums {
+        [first, ..rest] { print("has elements") }
+        _ { print("empty") }
+    }
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (match_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier))))))))))))
+            (match_arm
+              (pattern
+                (list_pattern
+                  (list_pattern_element
+                    (pattern
+                      (identifier_pattern
+                        (identifier))))
+                  (list_pattern_element
+                    (rest_pattern
+                      (pattern
+                        (identifier_pattern
+                          (identifier)))))))
+              (block
+                (statement
+                  (expression_statement
+                    (expression
+                      (logic_or_expression
+                        (logic_and_expression
+                          (equality_expression
+                            (comparison_expression
+                              (sum_expression
+                                (product_expression
+                                  (power_expression
+                                    (unary_expression
+                                      (postfix_expression
+                                        (call_expression
+                                          (call_target
+                                            (identifier))
+                                          (argument_list
+                                            (expression
+                                              (logic_or_expression
+                                                (logic_and_expression
+                                                  (equality_expression
+                                                    (comparison_expression
+                                                      (sum_expression
+                                                        (product_expression
+                                                          (power_expression
+                                                            (unary_expression
+                                                              (postfix_expression
+                                                                (primary_expression
+                                                                  (literal
+                                                                    (string_literal)))))))))))))))))))))))))))))
+            (match_arm
+              (pattern
+                (wildcard_pattern
+                  (underscore)))
+              (block
+                (statement
+                  (expression_statement
+                    (expression
+                      (logic_or_expression
+                        (logic_and_expression
+                          (equality_expression
+                            (comparison_expression
+                              (sum_expression
+                                (product_expression
+                                  (power_expression
+                                    (unary_expression
+                                      (postfix_expression
+                                        (call_expression
+                                          (call_target
+                                            (identifier))
+                                          (argument_list
+                                            (expression
+                                              (logic_or_expression
+                                                (logic_and_expression
+                                                  (equality_expression
+                                                    (comparison_expression
+                                                      (sum_expression
+                                                        (product_expression
+                                                          (power_expression
+                                                            (unary_expression
+                                                              (postfix_expression
+                                                                (primary_expression
+                                                                  (literal
+                                                                    (string_literal)))))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+Rest pattern alone
+==================
+
+func main() returns void {
+    match nums {
+        [..rest] { print("any") }
+    }
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (match_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier))))))))))))
+            (match_arm
+              (pattern
+                (list_pattern
+                  (list_pattern_element
+                    (rest_pattern
+                      (pattern
+                        (identifier_pattern
+                          (identifier)))))))
+              (block
+                (statement
+                  (expression_statement
+                    (expression
+                      (logic_or_expression
+                        (logic_and_expression
+                          (equality_expression
+                            (comparison_expression
+                              (sum_expression
+                                (product_expression
+                                  (power_expression
+                                    (unary_expression
+                                      (postfix_expression
+                                        (call_expression
+                                          (call_target
+                                            (identifier))
+                                          (argument_list
+                                            (expression
+                                              (logic_or_expression
+                                                (logic_and_expression
+                                                  (equality_expression
+                                                    (comparison_expression
+                                                      (sum_expression
+                                                        (product_expression
+                                                          (power_expression
+                                                            (unary_expression
+                                                              (postfix_expression
+                                                                (primary_expression
+                                                                  (literal
+                                                                    (string_literal)))))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+in operator
+==================
+
+func main() returns void {
+    print((3 in nums).to_string())
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (grouped_expression
+                                                                  (expression
+                                                                    (logic_or_expression
+                                                                      (logic_and_expression
+                                                                        (equality_expression
+                                                                          (comparison_expression
+                                                                            (sum_expression
+                                                                              (product_expression
+                                                                                (power_expression
+                                                                                  (unary_expression
+                                                                                    (postfix_expression
+                                                                                      (primary_expression
+                                                                                        (literal
+                                                                                          (int_literal))))))))
+                                                                            (sum_expression
+                                                                              (product_expression
+                                                                                (power_expression
+                                                                                  (unary_expression
+                                                                                    (postfix_expression
+                                                                                      (primary_expression
+                                                                                        (identifier))))))))))))))
+                                                              (identifier))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+in operator binds looser than sum
+==================
+
+func main() returns void {
+    bool b = 1 + 2 in nums
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (declaration
+          (typed_declaration
+            (type_name
+              (type_path
+                (identifier)))
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal)))))))
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (int_literal))))))))
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (identifier))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+for in is not the in operator
+==================
+
+func main() returns void {
+    for int i in range(0, 3) {
+        print(i.to_string())
+    }
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (for_statement
+            (type_name
+              (type_path
+                (identifier)))
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (primary_expression
+                                                          (literal
+                                                            (int_literal)))))))))))))
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (primary_expression
+                                                          (literal
+                                                            (int_literal)))))))))))))))))))))))))
+            (block
+              (statement
+                (expression_statement
+                  (expression
+                    (logic_or_expression
+                      (logic_and_expression
+                        (equality_expression
+                          (comparison_expression
+                            (sum_expression
+                              (product_expression
+                                (power_expression
+                                  (unary_expression
+                                    (postfix_expression
+                                      (call_expression
+                                        (call_target
+                                          (identifier))
+                                        (argument_list
+                                          (expression
+                                            (logic_or_expression
+                                              (logic_and_expression
+                                                (equality_expression
+                                                  (comparison_expression
+                                                    (sum_expression
+                                                      (product_expression
+                                                        (power_expression
+                                                          (unary_expression
+                                                            (postfix_expression
+                                                              (call_expression
+                                                                (call_target
+                                                                  (field_access
+                                                                    (member_object
+                                                                      (identifier))
+                                                                    (identifier)))))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+Method call on a string literal
+==================
+
+func main() returns void {
+    print("42".to_int().to_string())
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (call_expression
+                                                                  (call_target
+                                                                    (field_access
+                                                                      (member_object
+                                                                        (literal
+                                                                          (string_literal)))
+                                                                      (identifier)))))
+                                                              (identifier))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+Method call on an int literal
+==================
+
+func main() returns void {
+    print(42.to_string())
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (literal
+                                                                  (int_literal)))
+                                                              (identifier))))))))))))))))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+Float literals
+==================
+
+func main() returns void {
+    auto a = 42.0
+    auto b = .5
+    auto c = 42e5
+    auto d = 42.5e-3
+    auto e = 1_000.5
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (statement
+          (return_statement))))))
+
+==================
+A trailing dot is not a float
+==================
+
+func main() returns void {
+    print(42.to_string())
+    auto ok = 42.0
+    return
+}
+
+---
+
+(source_file
+  (declaration
+    (function_declaration
+      (identifier)
+      (type_name
+        (type_path
+          (identifier)))
+      (block
+        (statement
+          (expression_statement
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (call_expression
+                                  (call_target
+                                    (identifier))
+                                  (argument_list
+                                    (expression
+                                      (logic_or_expression
+                                        (logic_and_expression
+                                          (equality_expression
+                                            (comparison_expression
+                                              (sum_expression
+                                                (product_expression
+                                                  (power_expression
+                                                    (unary_expression
+                                                      (postfix_expression
+                                                        (call_expression
+                                                          (call_target
+                                                            (field_access
+                                                              (member_object
+                                                                (literal
+                                                                  (int_literal)))
+                                                              (identifier))))))))))))))))))))))))))))
+        (declaration
+          (auto_declaration
+            (identifier)
+            (expression
+              (logic_or_expression
+                (logic_and_expression
+                  (equality_expression
+                    (comparison_expression
+                      (sum_expression
+                        (product_expression
+                          (power_expression
+                            (unary_expression
+                              (postfix_expression
+                                (primary_expression
+                                  (literal
+                                    (float_literal)))))))))))))))
+        (statement
+          (return_statement))))))
