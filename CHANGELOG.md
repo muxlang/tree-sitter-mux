@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **An identifier can begin with an underscore.** The vendored
+  `syntax-matrix.json` pattern is now
+  `(?:[a-zA-Z][a-zA-Z0-9_]*|_[a-zA-Z0-9_]+)`, so `_x`, `_123` and `__` parse as
+  `identifier`. A bare `_` still parses as `underscore` in both of its
+  positions, the match wildcard and the unused-parameter marker. `grammar.js`
+  builds the token straight from the pattern, so only `src/` needed
+  regenerating. Closes muxlang/mux-context#46.
+
 ## [0.5.0] - 2026-07-13
 
 First changelog for `tree-sitter-mux` as a standalone, independently versioned
