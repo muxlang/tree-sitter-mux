@@ -897,7 +897,7 @@
     "fields": {
       "index": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "expression",
@@ -911,6 +911,16 @@
         "types": [
           {
             "type": "member_object",
+            "named": true
+          }
+        ]
+      },
+      "slice": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "slice_bounds",
             "named": true
           }
         ]
@@ -1659,6 +1669,32 @@
     }
   },
   {
+    "type": "slice_bounds",
+    "named": true,
+    "fields": {
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "start": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -1982,7 +2018,7 @@
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "expression",
