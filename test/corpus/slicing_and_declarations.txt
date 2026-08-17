@@ -427,34 +427,17 @@ func main() returns void {
               (type_path
                 (identifier)))
             (identifier)))
-        (expression
-          (logic_or_expression
-            (logic_and_expression
-              (equality_expression
-                (comparison_expression
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (field_access
-                              (member_object
-                                (identifier))
-                              (identifier)))))))
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (primary_expression
-                              (identifier)))))))
-                  (sum_expression
-                    (product_expression
-                      (power_expression
-                        (unary_expression
-                          (postfix_expression
-                            (primary_expression
-                              (identifier))))))))))))
+        (declaration
+          (typed_declaration
+            (type_name
+              (type_path
+                (identifier)
+                (identifier)
+                (type_args
+                  (type_arg_list
+                    (type_arg
+                      (identifier))))))
+            (identifier)))
         (declaration
           (typed_declaration
             (type_name

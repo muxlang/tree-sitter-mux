@@ -130,11 +130,18 @@ module.exports = grammar({
     // a `match` arm and used after it. The compiler's definite-assignment
     // analysis is what rejects a read before the write; the grammar only has to
     // admit the form.
-    typed_declaration: $ => seq(
+    // `prec.dynamic` because this is a genuine ambiguity that only the runtime
+    // can settle: `graph.Graph<string> g` is a declaration of a generic type,
+    // but it also parses as the comparison chain `(graph.Graph < string) > g`.
+    // Both are valid shapes for the expression grammar, so the conflict is not
+    // resolvable statically - without a dynamic preference the parser picks the
+    // comparison and an uninitialized generic declaration highlights as
+    // arithmetic. A static `prec` does not reach it; GLR needs the tiebreak.
+    typed_declaration: $ => prec.dynamic(1, seq(
       field('type', $.type_name),
       field('name', $.identifier),
       optional(seq('=', field('value', $.expression)))
-    ),
+    )),
 
     const_declaration: $ => seq(
       'const',
