@@ -125,12 +125,23 @@ module.exports = grammar({
       field('value', $.expression)
     ),
 
-    typed_declaration: $ => seq(
+    // The initializer is optional: `TcpListener listener` declares without
+    // assigning, so a value whose type has no natural zero can be bound inside
+    // a `match` arm and used after it. The compiler's definite-assignment
+    // analysis is what rejects a read before the write; the grammar only has to
+    // admit the form.
+    // `prec.dynamic` because this is a genuine ambiguity that only the runtime
+    // can settle: `graph.Graph<string> g` is a declaration of a generic type,
+    // but it also parses as the comparison chain `(graph.Graph < string) > g`.
+    // Both are valid shapes for the expression grammar, so the conflict is not
+    // resolvable statically - without a dynamic preference the parser picks the
+    // comparison and an uninitialized generic declaration highlights as
+    // arithmetic. A static `prec` does not reach it; GLR needs the tiebreak.
+    typed_declaration: $ => prec.dynamic(1, seq(
       field('type', $.type_name),
       field('name', $.identifier),
-      '=',
-      field('value', $.expression)
-    ),
+      optional(seq('=', field('value', $.expression)))
+    )),
 
     const_declaration: $ => seq(
       'const',
@@ -382,9 +393,23 @@ module.exports = grammar({
     index_access: $ => prec.left(seq(
       field('object', $.member_object),
       '[',
-      field('index', $.expression),
+      choice(
+        field('index', $.expression),
+        field('slice', $.slice_bounds)
+      ),
       ']'
     )),
+
+    // Python-style half-open slicing, on lists and on strings alike: `xs[1:3]`
+    // takes positions 1 and 2. Either bound may be omitted - `xs[:3]`, `xs[1:]`,
+    // `xs[:]` - and a negative bound counts from the end. The colon is what
+    // distinguishes a slice from an index, so an omitted bound cannot be left
+    // out of the rule the way an optional field usually would be.
+    slice_bounds: $ => seq(
+      optional(field('start', $.expression)),
+      ':',
+      optional(field('end', $.expression))
+    ),
 
     primary_expression: $ => choice(
       $.literal,
