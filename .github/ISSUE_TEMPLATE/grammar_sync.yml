@@ -1,6 +1,7 @@
 name: Grammar sync
 description: Track syncing the vendored syntax-matrix.json from mux-syntax-highlighting
 labels: ["needs triage", "syntax-matrix"]
+type: Chore
 assignees: ["DerekCorniello"]
 body:
   - type: textarea
