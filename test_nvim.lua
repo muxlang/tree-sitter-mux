@@ -3,14 +3,15 @@
 
 -- This script checks if Tree-sitter is highlighting correctly
 local buf = vim.api.nvim_get_current_buf()
-local parser = vim.treesitter.get_parser(buf)
+local ok, parser = pcall(vim.treesitter.get_parser, buf)
 
-if parser then
-  print("Parser loaded successfully: " .. parser:lang())
-  local tree = parser:parse()
-  if tree and tree[1] then
-    print("Parse tree root: " .. tree[1]:root():type())
-  end
-else
-  print("Failed to load parser")
+if not ok or not parser then
+  error("Failed to load the Mux parser")
 end
+
+print("Parser loaded successfully: " .. parser:lang())
+local trees = parser:parse()
+if not trees or not trees[1] then
+  error("Mux parser returned no parse tree")
+end
+print("Parse tree root: " .. trees[1]:root():type())
