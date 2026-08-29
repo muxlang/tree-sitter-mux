@@ -10,11 +10,20 @@ const samples = ['test.mux', 'validation.mux'];
 const cacheRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tree-sitter-mux-cache-'));
 
 function run(args) {
-  return spawnSync('tree-sitter', args, {
-    cwd: root,
-    encoding: 'utf8',
-    env: { ...process.env, XDG_CACHE_HOME: cacheRoot },
-  });
+  const previousCache = process.env.XDG_CACHE_HOME;
+  process.env.XDG_CACHE_HOME = cacheRoot;
+  try {
+    return spawnSync('tree-sitter', args, {
+      cwd: root,
+      encoding: 'utf8',
+    });
+  } finally {
+    if (previousCache === undefined) {
+      delete process.env.XDG_CACHE_HOME;
+    } else {
+      process.env.XDG_CACHE_HOME = previousCache;
+    }
+  }
 }
 
 function diagnostic(result) {
