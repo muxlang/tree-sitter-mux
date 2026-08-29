@@ -42,6 +42,7 @@ jobs:
           node-version: '20'
       - name: JavaScript quality
         run: npm ci --ignore-scripts && npm run lint && npm run format:check
+      - run: npm install -g tree-sitter-cli@0.26.8
       - name: Parse and highlight checked-in samples
         run: npm run samples
       - name: Verify vendored syntax-matrix.json matches canonical
@@ -53,7 +54,6 @@ jobs:
             echo "Re-sync it with: ./scripts/sync-matrix.sh (then commit the updated syntax-matrix.json)."
             exit 1
           fi
-      - run: npm install -g tree-sitter-cli@0.26.8
       - name: Generate parser
         run: tree-sitter generate grammar.js
       - name: Verify the committed parser matches grammar.js
