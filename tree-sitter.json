@@ -3,14 +3,15 @@
     {
       "name": "mux",
       "scope": "source.mux",
-      "file-types": [".mux"]
+      "file-types": [".mux"],
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {
     "version": "0.6.0",
     "license": "MIT",
     "description": "Mux programming language grammar for Tree-sitter",
-    "authors": [{"name": "Derek Corniello", "url": "https://github.com/DerekCorniello"}],
-    "links": {"repository": "https://github.com/muxlang/tree-sitter-mux"}
+    "authors": [{ "name": "Derek Corniello", "url": "https://github.com/DerekCorniello" }],
+    "links": { "repository": "https://github.com/muxlang/tree-sitter-mux" }
   }
 }

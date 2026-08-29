@@ -8,8 +8,6 @@ const token_of = values => (
 );
 const regex_of = pattern => new RegExp(pattern);
 
-const declaration_keywords = syntax.keywords.declaration.filter(keyword => keyword !== 'common');
-
 module.exports = grammar({
   name: 'mux',
 
@@ -302,8 +300,8 @@ module.exports = grammar({
       optional(field('value', $.expression))
     )),
 
-    break_statement: $ => 'break',
-    continue_statement: $ => 'continue',
+    break_statement: _ => 'break',
+    continue_statement: _ => 'continue',
     expression_statement: $ => $.expression,
 
     expression: $ => choice(
@@ -608,7 +606,7 @@ module.exports = grammar({
       optional($.import_wildcard)
     ),
 
-    import_wildcard: $ => seq('.', '*'),
+    import_wildcard: _ => seq('.', '*'),
 
     literal: $ => choice(
       $.int_literal,
@@ -619,22 +617,22 @@ module.exports = grammar({
       $.triple_string_literal
     ),
 
-    line_comment: $ => token(prec(1, regex_of(syntax.comments.line.pattern))),
-    block_comment: $ => token(prec(1, regex_of(syntax.comments.block.pattern))),
+    line_comment: _ => token(prec(1, regex_of(syntax.comments.line.pattern))),
+    block_comment: _ => token(prec(1, regex_of(syntax.comments.block.pattern))),
 
-    keyword_constant: $ => token_of(syntax.keywords.constant),
+    keyword_constant: _ => token_of(syntax.keywords.constant),
 
-    boolean: $ => token_of(syntax.keywords.boolean_literals),
+    boolean: _ => token_of(syntax.keywords.boolean_literals),
 
-    int_literal: $ => token(prec(1, regex_of(syntax.literals.integer.pattern))),
-    float_literal: $ => token(prec(1, regex_of(syntax.literals.float.pattern))),
+    int_literal: _ => token(prec(1, regex_of(syntax.literals.integer.pattern))),
+    float_literal: _ => token(prec(1, regex_of(syntax.literals.float.pattern))),
 
-    char_literal: $ => token(regex_of(syntax.literals.char.pattern)),
-    string_literal: $ => token(regex_of(syntax.literals.string.single_line.pattern)),
-    triple_string_literal: $ => token(regex_of(syntax.literals.string.multi_line.pattern)),
+    char_literal: _ => token(regex_of(syntax.literals.char.pattern)),
+    string_literal: _ => token(regex_of(syntax.literals.string.single_line.pattern)),
+    triple_string_literal: _ => token(regex_of(syntax.literals.string.multi_line.pattern)),
 
-    underscore: $ => token(syntax.identifiers.underscore),
+    underscore: _ => token(syntax.identifiers.underscore),
 
-    identifier: $ => token(regex_of(syntax.identifiers.pattern)),
+    identifier: _ => token(regex_of(syntax.identifiers.pattern)),
   }
 });
