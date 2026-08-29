@@ -8,12 +8,17 @@ const { spawnSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const samples = ['test.mux', 'validation.mux'];
 const cacheRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tree-sitter-mux-cache-'));
+const treeSitterBinary = process.env.TREE_SITTER_BIN;
+
+if (!treeSitterBinary || !path.isAbsolute(treeSitterBinary)) {
+  throw new Error('TREE_SITTER_BIN must be an absolute path to the pinned tree-sitter executable');
+}
 
 function run(args) {
   const previousCache = process.env.XDG_CACHE_HOME;
   process.env.XDG_CACHE_HOME = cacheRoot;
   try {
-    return spawnSync('tree-sitter', args, {
+    return spawnSync(treeSitterBinary, args, {
       cwd: root,
       encoding: 'utf8',
     });

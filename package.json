@@ -8,7 +8,7 @@
     "format": "prettier --write 'eslint.config.js' 'scripts/**/*.js' 'package.json' 'tree-sitter.json'",
     "format:check": "prettier --check 'eslint.config.js' 'scripts/**/*.js' 'package.json' 'tree-sitter.json'",
     "lint": "eslint grammar.js --max-warnings 0",
-    "samples": "node scripts/check-samples.js"
+    "samples": "TREE_SITTER_BIN=\"$(command -v tree-sitter)\" node scripts/check-samples.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
