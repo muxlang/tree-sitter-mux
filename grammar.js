@@ -631,7 +631,12 @@ module.exports = grammar({
 
     char_literal: _ => token(regex_of(syntax.literals.char.pattern)),
     string_literal: _ => token(regex_of(syntax.literals.string.single_line.pattern)),
-    bytes_literal: _ => token(prec(1, regex_of(syntax.literals.bytes.pattern))),
+    // Tree-sitter's regex engine does not support assertions. The lexer starts
+    // each token at the first character, so the identifier token already
+    // prevents a byte literal from beginning inside an identifier.
+    bytes_literal: _ => token(
+      prec(1, regex_of(syntax.literals.bytes.pattern.replace(/^\\b/, ''))),
+    ),
     triple_string_literal: _ => token(regex_of(syntax.literals.string.multi_line.pattern)),
 
     underscore: _ => token(syntax.identifiers.underscore),

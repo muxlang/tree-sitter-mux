@@ -57,7 +57,7 @@ jobs:
               ref="$branch"
             fi
           fi
-          curl --proto '=https' -fsSL "https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/${ref}/shared/syntax-matrix.json" -o /tmp/canonical-syntax-matrix.json
+          curl --proto '=https' -fsSL "https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/${ref}/shared/syntax-matrix.json?cachebust=${GITHUB_SHA}" -o /tmp/canonical-syntax-matrix.json
           if ! diff -u /tmp/canonical-syntax-matrix.json ./syntax-matrix.json; then
             echo "::error::Vendored syntax-matrix.json has drifted from canonical shared/syntax-matrix.json in muxlang/mux-syntax-highlighting (${ref})."
             echo "Re-sync it with: ./scripts/sync-matrix.sh (then commit the updated syntax-matrix.json)."
