@@ -46,11 +46,20 @@ jobs:
       - name: Parse and highlight checked-in samples
         run: npm run samples
       - name: Verify vendored syntax-matrix.json matches canonical
+        env:
+          PR_BRANCH: ${{ github.head_ref }}
         run: |
           set -euo pipefail
-          curl --proto '=https' -fsSL https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/main/shared/syntax-matrix.json -o /tmp/canonical-syntax-matrix.json
+          ref=main
+          if [ "${{ github.event_name }}" = pull_request ]; then
+            branch="$PR_BRANCH"
+            if git ls-remote --exit-code --heads https://github.com/muxlang/mux-syntax-highlighting.git "refs/heads/${branch}" >/dev/null 2>&1; then
+              ref="$branch"
+            fi
+          fi
+          curl --proto '=https' -fsSL "https://raw.githubusercontent.com/muxlang/mux-syntax-highlighting/${ref}/shared/syntax-matrix.json" -o /tmp/canonical-syntax-matrix.json
           if ! diff -u /tmp/canonical-syntax-matrix.json ./syntax-matrix.json; then
-            echo "::error::Vendored syntax-matrix.json has drifted from canonical shared/syntax-matrix.json in muxlang/mux-syntax-highlighting."
+            echo "::error::Vendored syntax-matrix.json has drifted from canonical shared/syntax-matrix.json in muxlang/mux-syntax-highlighting (${ref})."
             echo "Re-sync it with: ./scripts/sync-matrix.sh (then commit the updated syntax-matrix.json)."
             exit 1
           fi
