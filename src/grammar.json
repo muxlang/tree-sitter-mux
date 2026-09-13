@@ -1798,6 +1798,10 @@
                 "members": [
                   {
                     "type": "STRING",
+                    "value": "use"
+                  },
+                  {
+                    "type": "STRING",
                     "value": "!"
                   },
                   {
@@ -2982,6 +2986,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "bytes_literal"
+        },
+        {
+          "type": "SYMBOL",
           "name": "triple_string_literal"
         }
       ]
@@ -3073,6 +3081,17 @@
       "content": {
         "type": "PATTERN",
         "value": "\"(\\\\.|[^\"\\\\])*\""
+      }
+    },
+    "bytes_literal": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "b\"(\\\\.|[^\"\\\\])*\""
+        }
       }
     },
     "triple_string_literal": {

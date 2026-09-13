@@ -1124,6 +1124,10 @@
           "named": true
         },
         {
+          "type": "bytes_literal",
+          "named": true
+        },
+        {
           "type": "char_literal",
           "named": true
         },
@@ -2248,6 +2252,10 @@
     "named": true
   },
   {
+    "type": "bytes_literal",
+    "named": true
+  },
+  {
     "type": "char_literal",
     "named": true
   },
@@ -2346,6 +2354,10 @@
   {
     "type": "underscore",
     "named": true
+  },
+  {
+    "type": "use",
+    "named": false
   },
   {
     "type": "where",
