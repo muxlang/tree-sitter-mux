@@ -357,6 +357,7 @@ module.exports = grammar({
 
     unary_expression: $ => prec.right(choice(
       seq(choice_of([
+        'use',
         syntax.operators.logical.find(op => op.symbol === '!').symbol,
         syntax.operators.arithmetic.find(op => op.symbol === '-').symbol,
         syntax.operators.other.find(op => op.symbol === '&').symbol,
@@ -614,6 +615,7 @@ module.exports = grammar({
       $.boolean,
       $.char_literal,
       $.string_literal,
+      $.bytes_literal,
       $.triple_string_literal
     ),
 
@@ -629,6 +631,12 @@ module.exports = grammar({
 
     char_literal: _ => token(regex_of(syntax.literals.char.pattern)),
     string_literal: _ => token(regex_of(syntax.literals.string.single_line.pattern)),
+    // Tree-sitter's regex engine does not support assertions. The lexer starts
+    // each token at the first character, so the identifier token already
+    // prevents a byte literal from beginning inside an identifier.
+    bytes_literal: _ => token(
+      prec(1, regex_of(syntax.literals.bytes.pattern.replace(/^\\b/, ''))),
+    ),
     triple_string_literal: _ => token(regex_of(syntax.literals.string.multi_line.pattern)),
 
     underscore: _ => token(syntax.identifiers.underscore),

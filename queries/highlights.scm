@@ -27,6 +27,7 @@
 (guard_clause "if" @keyword @keyword.control)
 (break_statement) @keyword @keyword.control
 (continue_statement) @keyword @keyword.control
+(unary_expression "use" @keyword @keyword.control)
 (trait_clause "is" @keyword @keyword.operator)
 (where_clause "where" @keyword @keyword.declaration)
 (import_alias "as" @keyword @keyword.operator)
@@ -43,6 +44,7 @@
 ;; Literals
 (char_literal) @string @string.quoted.single
 (string_literal) @string @string.quoted.double
+(bytes_literal) @string @string.quoted.bytes
 (triple_string_literal) @string @string.quoted.triple.double
 (underscore) @variable @variable.language
 
@@ -103,7 +105,7 @@
 (enum_payload_field type: (type_name) @type)
 
 ((identifier) @type
- (#match? @type "^(string|bool|void|int|float|char|optional|result|list|map|tuple|set|range|Stringable|Hashable|Thread|Error|Self)$"))
+ (#match? @type "^(string|bool|void|int|float|char|byte|bytes|optional|result|list|map|tuple|set|range|Stringable|Hashable|Thread|Error|Self)$"))
 
 ((identifier) @variable.builtin
  (#eq? @variable.builtin "self"))

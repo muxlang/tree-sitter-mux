@@ -47,7 +47,7 @@ import shapes
 Wildcard import with alias
 ==================
 
-import std.assert.* as a
+import std.dsa.* as a
 
 ---
 

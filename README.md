@@ -26,7 +26,10 @@ tree-sitter ecosystem expects.
   [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting);
   keep this copy in sync with it. CI verifies the vendored copy against canonical
   on every push/PR and fails on drift; run `./scripts/sync-matrix.sh` to refresh
-  it in one command (then commit the updated `syntax-matrix.json`).
+  it in one command (then commit the updated `syntax-matrix.json`). When
+  working against a coordinated syntax branch, set
+  `SYNTAX_MATRIX_REF=<branch>` so the refresh uses that branch instead of
+  `main`.
 - `queries/highlights.scm` - highlight queries (generated from the spec, vendored).
 - `test/` - corpus tests run by `tree-sitter test`.
 
