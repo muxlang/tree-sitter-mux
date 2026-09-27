@@ -176,6 +176,38 @@ func main() returns void {
         (statement
           (return_statement))))))
 
+======================
+Trailing operator line continuation
+======================
+
+auto total = left +
+    right
+
+---
+
+(source_file
+  (declaration
+    (auto_declaration
+      (identifier)
+      (expression
+        (logic_or_expression
+          (logic_and_expression
+            (equality_expression
+              (comparison_expression
+                (sum_expression
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (primary_expression
+                            (identifier))))))
+                  (product_expression
+                    (power_expression
+                      (unary_expression
+                        (postfix_expression
+                          (primary_expression
+                            (identifier)))))))))))))))
+
 ==================
 Rest pattern alone
 ==================

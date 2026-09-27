@@ -16,6 +16,10 @@ programming language. Powers parser-based editor tooling: Neovim
 (nvim-treesitter), Helix, and Emacs. `grammar.js` lives at the repo root, as the
 tree-sitter ecosystem expects.
 
+The grammar accepts binary expressions continued after a trailing operator.
+It treats whitespace permissively for editor parsing; the compiler enforces
+the exact newline rule, including rejecting a leading operator on a new line.
+
 ---
 
 ## Layout
