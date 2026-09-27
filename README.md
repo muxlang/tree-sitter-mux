@@ -19,6 +19,8 @@ tree-sitter ecosystem expects.
 The grammar accepts binary expressions continued after a trailing operator.
 It treats whitespace permissively for editor parsing; the compiler enforces
 the exact newline rule, including rejecting a leading operator on a new line.
+The `line_continuation.examples` in `syntax-matrix.json` describe compiler
+validity; this grammar may still parse the examples marked invalid.
 
 ---
 
