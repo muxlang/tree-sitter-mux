@@ -3,15 +3,14 @@
 Wiring the Mux tree-sitter grammar into parser-based editors (Neovim, Helix,
 Emacs).
 
-The generated parser (`src/parser.c`) is committed, so none of these need the
-tree-sitter CLI - each editor compiles it directly. Getting Mux into the
-nvim-treesitter registry and Helix upstream, so `:TSInstall mux` needs no config
-at all, is tracked in [muxlang/mux-context](https://github.com/muxlang/mux-context).
+The generated parser (`src/parser.c`) is committed, so editors can compile it
+without installing the Tree-sitter CLI. Upstream Neovim and Helix integrations
+are being prepared; until they ship, use the manual setup below.
 
 ## Neovim (nvim-treesitter)
 
-Neovim does not recognize the `.mux` extension on its own, so register the
-filetype:
+Neovim does not yet recognize `.mux` files. Register the filetype until the
+Neovim core change is available:
 
 ```lua
 vim.filetype.add({ extension = { mux = "mux" } })
@@ -23,9 +22,10 @@ vim.filetype.add({ extension = { mux = "mux" } })
 require("nvim-treesitter.parsers").mux = {
   install_info = {
     url = "https://github.com/muxlang/tree-sitter-mux",
-    branch = "main",
-    queries = "queries",
+    revision = "d14c5d9e473f0bef87753eb1d1d9d8bd73e6d3a2",
   },
+  maintainers = { "@DerekCorniello" },
+  tier = 2,
 }
 ```
 
@@ -63,19 +63,21 @@ file-types = ["mux"]
 comment-token = "//"
 block-comment-tokens = { start = "/*", end = "*/" }
 grammar = "mux"
+language-servers = ["mux"]
 
 [[grammar]]
 name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "main" }
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "d14c5d9e473f0bef87753eb1d1d9d8bd73e6d3a2" }
+
+[language-server.mux]
+command = "mux"
+args = ["lsp"]
 ```
 
 ```bash
 hx --grammar fetch
 hx --grammar build
 ```
-
-Pin `rev` to a commit SHA rather than `main` if you want a reproducible setup;
-`main` re-resolves on every build.
 
 Helix does not read `queries/` from the grammar repo, so install the highlights
 into its runtime:
