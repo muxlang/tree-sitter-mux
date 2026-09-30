@@ -1,0 +1,34 @@
+name: Set up pinned Tree-sitter CLI
+description: Download and verify a Tree-sitter CLI release binary
+inputs:
+  asset:
+    description: Platform suffix of the official Tree-sitter CLI release asset
+    required: true
+  sha256:
+    description: Expected SHA-256 digest of the release asset
+    required: true
+  extension:
+    description: Executable suffix for the platform
+    required: false
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Download, verify, and install CLI
+      shell: bash
+      env:
+        ASSET: ${{ inputs.asset }}
+        SHA256: ${{ inputs.sha256 }}
+        EXTENSION: ${{ inputs.extension }}
+      run: |
+        set -euo pipefail
+        bin_dir="$RUNNER_TEMP/tree-sitter-bin"
+        archive="$RUNNER_TEMP/tree-sitter-${ASSET}.gz"
+        mkdir -p "$bin_dir"
+        curl --proto '=https' --tlsv1.2 -fsSL \
+          "https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.8/tree-sitter-${ASSET}.gz" \
+          -o "$archive"
+        echo "$SHA256  $archive" | sha256sum --check -
+        gzip -dc "$archive" > "$bin_dir/tree-sitter${EXTENSION}"
+        chmod +x "$bin_dir/tree-sitter${EXTENSION}"
+        echo "$bin_dir" >> "$GITHUB_PATH"

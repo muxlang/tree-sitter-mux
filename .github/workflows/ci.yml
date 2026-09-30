@@ -6,6 +6,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+
 concurrency:
   # Supersede an in-flight run for the SAME PR. Push runs deliberately get a
   # unique group (run_id): a shared group keeps only one pending run, so rapid
@@ -76,6 +79,73 @@ jobs:
           fi
       - name: Corpus tests
         run: tree-sitter test
+
+  parser_abi_compatibility:
+    name: Parser ABI compatibility (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset: linux-x64
+            sha256: 9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e
+            extension: ''
+          - os: windows-latest
+            asset: windows-x64
+            sha256: 28301a969412066bf4818c30c71d9c313091a9b9dc24b53a14ddda3a8e2cc2bb
+            extension: .exe
+          - os: macos-latest
+            asset: macos-arm64
+            sha256: 024e2cee34723524d62d41bde2d4baf23c8bbe0236e116c79c0b37d9575889e
+            extension: ''
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-tree-sitter
+        with:
+          asset: ${{ matrix.asset }}
+          sha256: ${{ matrix.sha256 }}
+          extension: ${{ matrix.extension }}
+      # The upstream composite test action has a nested @v3 action reference,
+      # which this repository's SHA-only action policy rejects. Run its parser
+      # generation and corpus-test steps directly on each supported platform.
+      - name: Generate parser for the current upstream ABI
+        env:
+          TREE_SITTER_ABI_VERSION: "15"
+        run: tree-sitter generate
+      - name: Verify generated parser is current
+        shell: bash
+        run: git diff --exit-code -- src/parser.c
+      - name: Test parser
+        shell: bash
+        run: tree-sitter test
+
+  query_validation:
+    name: Reference query validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-tree-sitter
+        with:
+          asset: linux-x64
+          sha256: 9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e
+      - name: Install and run pinned ts_query_ls
+        run: |
+          set -euo pipefail
+          parser_dir="$RUNNER_TEMP/parsers"
+          query_workspace="$RUNNER_TEMP/query-workspace"
+          mkdir -p "$parser_dir" "$query_workspace/queries/mux"
+          tree-sitter build --output "$parser_dir/mux.so"
+          cp queries/*.scm "$query_workspace/queries/mux/"
+          archive="$RUNNER_TEMP/ts_query_ls.tar.gz"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://github.com/ribru17/ts_query_ls/releases/download/v3.16.0/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz \
+            -o "$archive"
+          echo '35859176141c3ebaac231000fd96d50a14c6bc26963f0a1662aac33f656d443d  '"$archive" | sha256sum --check -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          config="$(jq -cn --arg parser_dir "$parser_dir" '{parser_install_directories: [$parser_dir], supported_abi_versions: {start: 15, end: 15}}')"
+          "$RUNNER_TEMP/ts_query_ls" check "$query_workspace/queries" \
+            --workspace "$query_workspace" --config "$config"
 
   sonarqube:
     name: SonarQube
