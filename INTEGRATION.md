@@ -49,6 +49,22 @@ The highlight queries live in `queries/highlights.scm` and nvim-treesitter picks
 them up from the installed parser. If you manage queries by hand, copy that file
 to `queries/mux/highlights.scm` on your runtimepath.
 
+The compiler v0.13.0 release includes the Mux language server. On Neovim 0.11 or
+newer, configure it after registering the `.mux` filetype:
+
+```lua
+vim.lsp.config('mux', {
+  cmd = { 'mux', 'lsp' },
+  filetypes = { 'mux' },
+  root_markers = { 'mux-project.json', '.git' },
+})
+vim.lsp.enable('mux')
+```
+
+Keep the compiler executable on Neovim's `PATH`. This manual configuration is
+needed until Mux is added to nvim-lspconfig; Tree-sitter parser distribution
+and language-server installation are separate.
+
 ## Helix
 
 Add the language and grammar to `~/.config/helix/languages.toml`, then let Helix
@@ -74,9 +90,9 @@ command = "mux"
 args = ["lsp"]
 ```
 
-The language-server block requires a compiler release that includes `mux lsp`.
-Until that release is available, remove the `[language-server.mux]` section and
-omit `language-servers = ["mux"]`.
+The Mux v0.13.0 compiler release includes `mux lsp`, so the language-server
+block works when `mux` is on Helix's `PATH`. Helix's native Mux definition is
+still pending upstream; keep this manual config until that change ships.
 
 ```bash
 hx --grammar fetch
