@@ -77,6 +77,41 @@ jobs:
       - name: Corpus tests
         run: tree-sitter test
 
+  upstream_parser_tests:
+    name: Upstream parser tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: tree-sitter/setup-action/cli@49f8c1f20b60102eae8c033bb7c7f6cd056f6086 # v2
+        with:
+          tree-sitter-ref: v0.26.8
+      - uses: tree-sitter/parser-test-action@05f6ce7c7e54603c45cd87ed926725dc870bcc63 # v3
+        with:
+          abi-version: "15"
+
+  query_validation:
+    name: Reference query validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: tree-sitter/setup-action/cli@49f8c1f20b60102eae8c033bb7c7f6cd056f6086 # v2
+        with:
+          tree-sitter-ref: v0.26.8
+      - name: Install and run pinned ts_query_ls
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/ts_query_ls.tar.gz"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://github.com/ribru17/ts_query_ls/releases/download/v3.16.0/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz \
+            -o "$archive"
+          echo '35859176141c3ebaac231000fd96d50a14c6bc26963f0a1662aac33f656d443d  '"$archive" | sha256sum --check -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ts_query_ls" check -f queries/
+
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
