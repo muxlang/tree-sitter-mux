@@ -2,6 +2,10 @@
 (line_comment) @comment @comment.line
 (block_comment) @comment @comment.block
 
+;; Keep the identifier fallback before more specific name patterns so
+;; declarations, calls, built-ins, and types retain their semantic captures.
+((identifier) @variable.other)
+
 ;; Keywords
 (function_declaration "func" @keyword @keyword.declaration)
 (function_declaration "returns" @keyword @keyword.declaration)
@@ -109,5 +113,3 @@
 
 ((identifier) @variable.builtin
  (#eq? @variable.builtin "self"))
-
-((identifier) @variable.other)
