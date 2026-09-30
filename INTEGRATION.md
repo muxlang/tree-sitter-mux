@@ -22,7 +22,7 @@ vim.filetype.add({ extension = { mux = "mux" } })
 require("nvim-treesitter.parsers").mux = {
   install_info = {
     url = "https://github.com/muxlang/tree-sitter-mux",
-    revision = "d14c5d9e473f0bef87753eb1d1d9d8bd73e6d3a2",
+    revision = "11a2d40da5680b61520dc5e0170a124add809617",
   },
   maintainers = { "@DerekCorniello" },
   tier = 2,
@@ -67,12 +67,16 @@ language-servers = ["mux"]
 
 [[grammar]]
 name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "d14c5d9e473f0bef87753eb1d1d9d8bd73e6d3a2" }
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "11a2d40da5680b61520dc5e0170a124add809617" }
 
 [language-server.mux]
 command = "mux"
 args = ["lsp"]
 ```
+
+The language-server block requires a compiler release that includes `mux lsp`.
+Until that release is available, remove the `[language-server.mux]` section and
+omit `language-servers = ["mux"]`.
 
 ```bash
 hx --grammar fetch
@@ -84,7 +88,7 @@ into its runtime:
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/mux
-curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/main/queries/highlights.scm \
+curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/11a2d40da5680b61520dc5e0170a124add809617/queries/highlights.scm \
   -o ~/.config/helix/runtime/queries/mux/highlights.scm
 ```
 
