@@ -6,6 +6,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+
 concurrency:
   # Supersede an in-flight run for the SAME PR. Push runs deliberately get a
   # unique group (run_id): a shared group keeps only one pending run, so rapid
@@ -78,44 +81,44 @@ jobs:
         run: tree-sitter test
 
   parser_abi_compatibility:
-    name: Parser ABI compatibility
-    runs-on: ubuntu-latest
+    name: Parser ABI compatibility (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset: linux-x64
+            sha256: 9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e
+            extension: ''
+          - os: windows-latest
+            asset: windows-x64
+            sha256: 28301a969412066bf4818c30c71d9c313091a9b9dc24b53a14ddda3a8e2cc2bb
+            extension: .exe
+          - os: macos-latest
+            asset: macos-arm64
+            sha256: 024e2cee34723524d62d41bde2d4baf23c8bbe0236e116c79c0b37d9575889e
+            extension: ''
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install pinned Tree-sitter CLI
-        run: |
-          set -euo pipefail
-          archive="$RUNNER_TEMP/tree-sitter.gz"
-          curl --proto '=https' --tlsv1.2 -fsSL \
-            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.8/tree-sitter-linux-x64.gz \
-            -o "$archive"
-          echo '9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e  '"$archive" | sha256sum --check -
-          gzip -d "$archive"
-          chmod +x "$RUNNER_TEMP/tree-sitter"
-          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-      - name: Generate parser for the current upstream ABI
-        env:
-          TREE_SITTER_ABI_VERSION: "15"
-        run: tree-sitter generate
-      - name: Test parser
-        run: tree-sitter test
+      - uses: ./.github/actions/setup-tree-sitter
+        with:
+          asset: ${{ matrix.asset }}
+          sha256: ${{ matrix.sha256 }}
+          extension: ${{ matrix.extension }}
+      - uses: tree-sitter/parser-test-action@05f6ce7c7e54603c45cd87ed926725dc870bcc63 # v3
+        with:
+          abi-version: "15"
 
   query_validation:
     name: Reference query validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install pinned Tree-sitter CLI
-        run: |
-          set -euo pipefail
-          archive="$RUNNER_TEMP/tree-sitter.gz"
-          curl --proto '=https' --tlsv1.2 -fsSL \
-            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.8/tree-sitter-linux-x64.gz \
-            -o "$archive"
-          echo '9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e  '"$archive" | sha256sum --check -
-          gzip -d "$archive"
-          chmod +x "$RUNNER_TEMP/tree-sitter"
-          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - uses: ./.github/actions/setup-tree-sitter
+        with:
+          asset: linux-x64
+          sha256: 9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e
       - name: Install and run pinned ts_query_ls
         run: |
           set -euo pipefail
@@ -130,7 +133,7 @@ jobs:
             -o "$archive"
           echo '35859176141c3ebaac231000fd96d50a14c6bc26963f0a1662aac33f656d443d  '"$archive" | sha256sum --check -
           tar -xzf "$archive" -C "$RUNNER_TEMP"
-          config="$(printf '{\"parser_install_directories\":[\"%s\"],\"supported_abi_versions\":{\"start\":15,\"end\":15}}' "$parser_dir")"
+          config="$(jq -cn --arg parser_dir "$parser_dir" '{parser_install_directories: [$parser_dir], supported_abi_versions: {start: 15, end: 15}}')"
           "$RUNNER_TEMP/ts_query_ls" check "$query_workspace/queries" \
             --workspace "$query_workspace" --config "$config"
 
