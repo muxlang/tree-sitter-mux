@@ -77,30 +77,45 @@ jobs:
       - name: Corpus tests
         run: tree-sitter test
 
-  upstream_parser_tests:
-    name: Upstream parser tests (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  parser_abi_compatibility:
+    name: Parser ABI compatibility
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: tree-sitter/setup-action/cli@49f8c1f20b60102eae8c033bb7c7f6cd056f6086 # v2
-        with:
-          tree-sitter-ref: v0.26.8
-      - uses: tree-sitter/parser-test-action@05f6ce7c7e54603c45cd87ed926725dc870bcc63 # v3
-        with:
-          abi-version: "15"
+      - name: Install pinned Tree-sitter CLI
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/tree-sitter.gz"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.8/tree-sitter-linux-x64.gz \
+            -o "$archive"
+          echo '9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e  '"$archive" | sha256sum --check -
+          gzip -d "$archive"
+          chmod +x "$RUNNER_TEMP/tree-sitter"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Generate parser for the current upstream ABI
+        env:
+          TREE_SITTER_ABI_VERSION: "15"
+        run: tree-sitter generate
+      - name: Test parser
+        run: tree-sitter test
 
   query_validation:
     name: Reference query validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: tree-sitter/setup-action/cli@49f8c1f20b60102eae8c033bb7c7f6cd056f6086 # v2
-        with:
-          tree-sitter-ref: v0.26.8
+      - name: Install pinned Tree-sitter CLI
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/tree-sitter.gz"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.8/tree-sitter-linux-x64.gz \
+            -o "$archive"
+          echo '9754a32800f0b970152782df177b4a47c711e34e651a7aceb384d8bd29fa136e  '"$archive" | sha256sum --check -
+          gzip -d "$archive"
+          chmod +x "$RUNNER_TEMP/tree-sitter"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
       - name: Install and run pinned ts_query_ls
         run: |
           set -euo pipefail
