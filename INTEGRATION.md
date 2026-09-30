@@ -22,7 +22,7 @@ vim.filetype.add({ extension = { mux = "mux" } })
 require("nvim-treesitter.parsers").mux = {
   install_info = {
     url = "https://github.com/muxlang/tree-sitter-mux",
-    revision = "d0bc6d6cc881c2aa09b0a79502817ad95576a95e",
+    revision = "9d89fb021c15b70b967ef8574c7e28d640d2b705",
   },
   maintainers = { "@DerekCorniello" },
   tier = 2,
@@ -67,7 +67,7 @@ language-servers = ["mux"]
 
 [[grammar]]
 name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "d0bc6d6cc881c2aa09b0a79502817ad95576a95e" }
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "9d89fb021c15b70b967ef8574c7e28d640d2b705" }
 
 [language-server.mux]
 command = "mux"
@@ -88,7 +88,7 @@ into its runtime:
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/mux
-curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/d0bc6d6cc881c2aa09b0a79502817ad95576a95e/queries/highlights.scm \
+curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/9d89fb021c15b70b967ef8574c7e28d640d2b705/queries/highlights.scm \
   -o ~/.config/helix/runtime/queries/mux/highlights.scm
 ```
 
