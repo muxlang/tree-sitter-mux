@@ -106,9 +106,19 @@ jobs:
           asset: ${{ matrix.asset }}
           sha256: ${{ matrix.sha256 }}
           extension: ${{ matrix.extension }}
-      - uses: tree-sitter/parser-test-action@05f6ce7c7e54603c45cd87ed926725dc870bcc63 # v3
-        with:
-          abi-version: "15"
+      # The upstream composite test action has a nested @v3 action reference,
+      # which this repository's SHA-only action policy rejects. Run its parser
+      # generation and corpus-test steps directly on each supported platform.
+      - name: Generate parser for the current upstream ABI
+        env:
+          TREE_SITTER_ABI_VERSION: "15"
+        run: tree-sitter generate
+      - name: Verify generated parser is current
+        shell: bash
+        run: git diff --exit-code -- src/parser.c
+      - name: Test parser
+        shell: bash
+        run: tree-sitter test
 
   query_validation:
     name: Reference query validation
