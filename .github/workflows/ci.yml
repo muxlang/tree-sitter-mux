@@ -131,7 +131,7 @@ jobs:
           echo '35859176141c3ebaac231000fd96d50a14c6bc26963f0a1662aac33f656d443d  '"$archive" | sha256sum --check -
           tar -xzf "$archive" -C "$RUNNER_TEMP"
           config="$(printf '{\"parser_install_directories\":[\"%s\"],\"supported_abi_versions\":{\"start\":15,\"end\":15}}' "$parser_dir")"
-          "$RUNNER_TEMP/ts_query_ls" check -f "$query_workspace/queries" \
+          "$RUNNER_TEMP/ts_query_ls" check "$query_workspace/queries" \
             --workspace "$query_workspace" --config "$config"
 
   sonarqube:
