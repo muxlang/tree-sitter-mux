@@ -146,6 +146,7 @@ jobs:
           config="$(jq -cn --arg parser_dir "$parser_dir" '{parser_install_directories: [$parser_dir], supported_abi_versions: {start: 15, end: 15}}')"
           "$RUNNER_TEMP/ts_query_ls" check "$query_workspace/queries" \
             --workspace "$query_workspace" --config "$config"
+
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
