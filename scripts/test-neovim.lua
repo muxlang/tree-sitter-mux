@@ -21,6 +21,25 @@ assert(captures.keyword, 'Mux keyword was not highlighted')
 assert(captures['function.call'], 'Mux function call was not highlighted')
 assert(captures.number, 'Mux numeric literal was not highlighted')
 
+local match_source = [[match some(15) {
+    some(value) { print(value) }
+    none { print("none") }
+}]]
+local match_tree = vim.treesitter.get_string_parser(match_source, 'mux'):parse()[1]
+local some_constant_count = 0
+for capture_id, node in query:iter_captures(match_tree:root(), match_source) do
+  local text = vim.treesitter.get_node_text(node, match_source)
+  if text == 'some' then
+    local capture = query.captures[capture_id]
+    assert(capture ~= 'function.call', 'some should not be highlighted as a function call')
+    assert(capture ~= 'constructor', 'some should match the constant style of none')
+    if capture == 'constant' or capture == 'constant.language' then
+      some_constant_count = some_constant_count + 1
+    end
+  end
+end
+assert(some_constant_count == 4, 'both some occurrences should use the constant captures used by none')
+
 local lsp = vim.lsp.config.mux
 assert(lsp ~= nil and lsp.cmd[1] == 'mux' and lsp.cmd[2] == 'lsp', 'Mux LSP defaults were not configured')
 

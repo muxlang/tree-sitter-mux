@@ -14,6 +14,7 @@ With lazy.nvim:
 ```lua
 {
   "muxlang/tree-sitter-mux",
+  tag = "v0.7.0",
   lazy = false,
   build = "nvim --headless --clean -l scripts/build-nvim-parser.lua",
   config = function()
@@ -24,6 +25,8 @@ With lazy.nvim:
 
 The plugin detects `.mux` files, builds and loads the committed parser,
 highlights them with Neovim's built-in Tree-sitter support, and starts `mux lsp`.
+This is the supported Neovim setup. It does not require nvim-treesitter or a
+separate Neovim configuration plugin.
 For a custom compiler path, pass it to setup:
 
 ```lua

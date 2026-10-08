@@ -60,7 +60,8 @@ See [INTEGRATION.md](INTEGRATION.md) for copy-pasteable setup. In short:
 
 - **Neovim:** install this repository as a plugin, build its parser with a C
   compiler, and call `require("mux").setup()`. This enables filetype detection,
-  Tree-sitter highlighting, and the native `mux lsp` client.
+  Tree-sitter highlighting, and the native `mux lsp` client. See
+  [INTEGRATION.md](INTEGRATION.md) for the plugin-manager setup.
 - **Helix:** add the `[[language]]` and `[[grammar]]` blocks, then
   `hx --grammar fetch && hx --grammar build`, and copy `queries/highlights.scm`
   into the Helix runtime.

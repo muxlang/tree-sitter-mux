@@ -147,6 +147,28 @@ jobs:
           "$RUNNER_TEMP/ts_query_ls" check "$query_workspace/queries" \
             --workspace "$query_workspace" --config "$config"
 
+  neovim_integration:
+    name: Neovim integration
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install pinned Neovim
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/nvim-linux-x86_64.tar.gz"
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://github.com/neovim/neovim/releases/download/v0.12.5/nvim-linux-x86_64.tar.gz \
+            -o "$archive"
+          echo 'bce0f56eda1f1b1db6eee8f4133d7a38813ea07933837dd1777411ca384c6875  '"$archive" | sha256sum --check -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
+      - name: Build Mux parser and run Neovim integration checks
+        run: |
+          nvim --headless --clean -i NONE -l scripts/build-nvim-parser.lua
+          nvim --headless --clean -i NONE -l scripts/test-neovim.lua
+
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
