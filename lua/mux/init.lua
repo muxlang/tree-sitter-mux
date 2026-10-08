@@ -6,6 +6,11 @@ local function plugin_root()
   return vim.fn.fnamemodify(source, ':p:h:h:h')
 end
 
+local function parser_library_extension()
+  local platform = dofile(plugin_root() .. '/lua/mux/platform.lua')
+  return platform.library_extension(vim.uv.os_uname().sysname)
+end
+
 function M.setup(opts)
   if setup_done then
     return
@@ -18,9 +23,7 @@ function M.setup(opts)
     error('tree-sitter-mux requires Neovim 0.11 or newer')
   end
 
-  local os_name = vim.uv.os_uname().sysname
-  local extension = os_name == 'Windows_NT' and 'dll' or (os_name == 'Darwin' and 'dylib' or 'so')
-  local parser = plugin_root() .. '/parser/mux.' .. extension
+  local parser = plugin_root() .. '/parser/mux.' .. parser_library_extension()
   if vim.uv.fs_stat(parser) == nil then
     error('Mux parser is not built. Run nvim --headless --clean -l scripts/build-nvim-parser.lua from the plugin directory.')
   end

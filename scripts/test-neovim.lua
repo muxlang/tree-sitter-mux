@@ -4,9 +4,18 @@ vim.opt.runtimepath:prepend(root)
 
 require('mux').setup({ lsp = false })
 
+local platform = dofile(root .. '/lua/mux/platform.lua')
+assert(platform.library_extension('Windows_NT') == 'dll', 'Windows parser extension is incorrect')
+assert(platform.library_extension('Darwin') == 'dylib', 'macOS parser extension is incorrect')
+assert(platform.library_extension('Linux') == 'so', 'Linux parser extension is incorrect')
+
 local sample = root .. '/test.mux'
 vim.cmd.edit(vim.fn.fnameescape(sample))
 assert(vim.bo.filetype == 'mux', 'Neovim did not detect the .mux filetype')
+assert(
+  vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()] ~= nil,
+  'Neovim did not attach an active Tree-sitter highlighter to the Mux buffer'
+)
 
 local parser = vim.treesitter.get_parser(0, 'mux')
 local tree = parser:parse()[1]

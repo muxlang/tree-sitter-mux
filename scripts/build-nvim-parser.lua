@@ -2,7 +2,8 @@ local source = debug.getinfo(1, 'S').source:sub(2)
 local root = vim.fn.fnamemodify(source, ':p:h:h')
 local parser_dir = root .. '/parser'
 local os_name = vim.uv.os_uname().sysname
-local extension = os_name == 'Windows_NT' and 'dll' or (os_name == 'Darwin' and 'dylib' or 'so')
+local platform = dofile(root .. '/lua/mux/platform.lua')
+local extension = platform.library_extension(os_name)
 local output = parser_dir .. '/mux.' .. extension
 local compiler = vim.env.CC
 
