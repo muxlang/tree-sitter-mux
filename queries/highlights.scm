@@ -96,7 +96,11 @@
 (enum_declaration name: (identifier) @type)
 (function_declaration name: (identifier) @function @function.declaration)
 (interface_method_declaration name: (identifier) @function @function.declaration)
-(call_expression function: (call_target (identifier) @function.call))
+;; Built-in optional/result variants use the same visual group in calls and patterns.
+((call_expression function: (call_target (identifier) @function.call))
+ (#not-match? @function.call "^(some|ok|err)$"))
+((call_expression function: (call_target (identifier) @constant @constant.language))
+ (#match? @constant "^(some|ok|err)$"))
 (parameter type: (type_name) @type)
 (field_declaration type: (type_name) @type)
 (typed_declaration type: (type_name) @type)
@@ -106,6 +110,10 @@
 (trait_clause (type_path) @type)
 (type_bound_clause (type_path) @type)
 (enum_variant name: (identifier) @constructor)
+((enum_variant_pattern name: (identifier) @constructor)
+ (#not-match? @constructor "^(some|ok|err)$"))
+((enum_variant_pattern name: (identifier) @constant @constant.language)
+ (#match? @constant "^(some|ok|err)$"))
 (enum_payload_field type: (type_name) @type)
 
 ((identifier) @type

@@ -12,9 +12,9 @@
 </div>
 
 [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for the Mux
-programming language. Powers parser-based editor tooling: Neovim
-(nvim-treesitter), Helix, and Emacs. `grammar.js` lives at the repo root, as the
-tree-sitter ecosystem expects.
+programming language. Powers parser-based editor tooling: Neovim with a
+Mux-maintained plugin, Helix, and Emacs. `grammar.js` lives at the repo root, as
+the Tree-sitter ecosystem expects.
 
 The grammar accepts binary expressions continued after a trailing operator.
 It treats whitespace permissively for editor parsing; the compiler enforces
@@ -58,24 +58,23 @@ CI runs `tree-sitter generate` + `tree-sitter test` plus a SonarQube scan.
 
 See [INTEGRATION.md](INTEGRATION.md) for copy-pasteable setup. In short:
 
-- **No prerequisite.** The generated parser is committed, so editors compile it
-  directly and none of them need the tree-sitter CLI.
-- **Neovim (nvim-treesitter):** register `mux` as a custom parser, add the `.mux`
-  filetype, then `:TSInstall mux`.
+- **Neovim:** install this repository as a plugin, build its parser with a C
+  compiler, and call `require("mux").setup()`. This enables filetype detection,
+  Tree-sitter highlighting, and the native `mux lsp` client. See
+  [INTEGRATION.md](INTEGRATION.md) for the plugin-manager setup.
 - **Helix:** add the `[[language]]` and `[[grammar]]` blocks, then
   `hx --grammar fetch && hx --grammar build`, and copy `queries/highlights.scm`
   into the Helix runtime.
 - **Emacs:** `treesit-install-language-grammar` pointing at this repo.
 
-A zero-config install (nvim-treesitter registry + Helix upstream) is planned
-follow-up, tracked in [mux-context](https://github.com/muxlang/mux-context).
+Neovim setup is maintained in this repository. Helix and Emacs use the manual
+configuration in [INTEGRATION.md](INTEGRATION.md).
 
 ---
 
 ## Compatibility
 
-Grammar revisions track the Mux language; nvim-treesitter consumers pin a specific
-commit SHA. See `COMPATIBILITY` notes in
+Grammar revisions track the Mux language. See `COMPATIBILITY` notes in
 [mux-syntax-highlighting](https://github.com/muxlang/mux-syntax-highlighting) for
 language-version mapping.
 

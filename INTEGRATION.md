@@ -1,53 +1,49 @@
 # Editor integration
 
-Wiring the Mux tree-sitter grammar into parser-based editors (Neovim, Helix,
-Emacs).
+Mux maintains the Neovim integration in this grammar repository. The generated
+parser is committed, so setup does not need the Tree-sitter CLI. A C compiler
+builds the small Neovim parser library during plugin installation.
 
-The generated parser (`src/parser.c`) is committed, so editors can compile it
-without installing the Tree-sitter CLI. Upstream Neovim and Helix integrations
-are being prepared; until they ship, use the manual setup below.
+## Neovim
 
-## Neovim (nvim-treesitter)
+Requires Neovim 0.11 or newer, a C compiler, and the Mux 0.13.0 or newer
+compiler on `PATH`.
 
-Neovim does not yet recognize `.mux` files. Register the filetype until the
-Neovim core change is available:
-
-```lua
-vim.filetype.add({ extension = { mux = "mux" } })
-```
-
-### nvim-treesitter `main` branch
+With lazy.nvim:
 
 ```lua
-require("nvim-treesitter.parsers").mux = {
-  install_info = {
-    url = "https://github.com/muxlang/tree-sitter-mux",
-    revision = "9d89fb021c15b70b967ef8574c7e28d640d2b705",
-  },
-  maintainers = { "@DerekCorniello" },
-  tier = 2,
+{
+  "muxlang/tree-sitter-mux",
+  tag = "v0.7.0",
+  lazy = false,
+  build = "nvim --headless --clean -l scripts/build-nvim-parser.lua",
+  config = function()
+    require("mux").setup()
+  end,
 }
 ```
 
-### nvim-treesitter `master` branch (classic)
+The plugin detects `.mux` files, builds and loads the committed parser,
+highlights them with Neovim's built-in Tree-sitter support, and starts `mux lsp`.
+This is the supported Neovim setup. It does not require nvim-treesitter or a
+separate Neovim configuration plugin.
+For a custom compiler path, pass it to setup:
 
 ```lua
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.mux = {
-  install_info = {
-    url = "https://github.com/muxlang/tree-sitter-mux",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-  filetype = "mux",
-}
+require("mux").setup({ lsp = { cmd = { "/path/to/mux", "lsp" } } })
 ```
 
-Then `:TSInstall mux`, and on the classic branch `:TSBufEnable highlight`.
+Use `require("mux").setup({ lsp = false })` to disable automatic LSP startup.
+For a manual package install, build the parser from the repository directory
+and call setup from `init.lua`:
 
-The highlight queries live in `queries/highlights.scm` and nvim-treesitter picks
-them up from the installed parser. If you manage queries by hand, copy that file
-to `queries/mux/highlights.scm` on your runtimepath.
+```sh
+nvim --headless --clean -l scripts/build-nvim-parser.lua
+```
+
+```lua
+require("mux").setup()
+```
 
 The compiler v0.13.0 release includes the Mux language server. On Neovim 0.11 or
 newer, configure it after registering the `.mux` filetype:
@@ -120,10 +116,14 @@ Run `hx --health mux` to confirm the grammar and queries are found.
 ```
 
 Confirm it loaded with `(treesit-ready-p 'mux)`. Copy `queries/highlights.scm`
-into your own major-mode setup as needed.
+into your major-mode setup as needed.
 
 ## Validation
 
+- `nvim --headless --clean -l scripts/build-nvim-parser.lua` builds the local
+  parser library.
+- `nvim --headless --clean -l scripts/test-neovim.lua` checks filetype
+  detection, parser loading, highlight queries, and default LSP settings.
 - `tree-sitter test` - corpus tests.
 - `tree-sitter generate` must leave `src/` unchanged; CI fails if the committed
   parser has drifted from `grammar.js`.

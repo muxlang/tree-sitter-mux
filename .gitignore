@@ -2,6 +2,10 @@ node_modules/
 build/
 *.log
 *.wasm
+/parser/*.dll
+/parser/*.dylib
+/parser/*.so
+/queries/mux/highlights.scm
 
 # src/parser.c and friends are generated from grammar.js but ARE committed:
 # every downstream consumer (nvim-treesitter, Helix, Emacs treesit) compiles
