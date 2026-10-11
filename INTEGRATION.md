@@ -14,7 +14,7 @@ With lazy.nvim:
 ```lua
 {
   "muxlang/tree-sitter-mux",
-  tag = "v0.7.0",
+  commit = "62de9d4500975790c18a6bc4f19a721107076de9",
   lazy = false,
   build = "nvim --headless --clean -l scripts/build-nvim-parser.lua",
   config = function()
@@ -79,7 +79,7 @@ language-servers = ["mux"]
 
 [[grammar]]
 name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "9d89fb021c15b70b967ef8574c7e28d640d2b705" }
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "62de9d4500975790c18a6bc4f19a721107076de9" }
 
 [language-server.mux]
 command = "mux"
@@ -100,7 +100,7 @@ into its runtime:
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/mux
-curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/9d89fb021c15b70b967ef8574c7e28d640d2b705/queries/highlights.scm \
+curl -fsSL https://raw.githubusercontent.com/muxlang/tree-sitter-mux/62de9d4500975790c18a6bc4f19a721107076de9/queries/highlights.scm \
   -o ~/.config/helix/runtime/queries/mux/highlights.scm
 ```
 

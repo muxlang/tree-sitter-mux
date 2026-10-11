@@ -2,8 +2,7 @@
 #
 #   hx --grammar fetch && hx --grammar build
 #
-# `rev` re-resolves on every build while it points at a branch; pin it to a
-# commit SHA for a reproducible setup.
+# Keep this revision in sync with the Helix examples in INTEGRATION.md.
 #
 # Helix does not read queries/ out of the grammar repo, so install the
 # highlights separately - see INTEGRATION.md.
@@ -19,4 +18,4 @@ grammar = "mux"
 
 [[grammar]]
 name = "mux"
-source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "main" }
+source = { git = "https://github.com/muxlang/tree-sitter-mux", rev = "62de9d4500975790c18a6bc4f19a721107076de9" }
