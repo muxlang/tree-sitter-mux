@@ -16,6 +16,12 @@ programming language. Powers parser-based editor tooling: Neovim with a
 Mux-maintained plugin, Helix, and Emacs. `grammar.js` lives at the repo root, as
 the Tree-sitter ecosystem expects.
 
+This repository provides parsing and syntax highlighting; the compiler's
+`mux lsp` provides diagnostics, navigation, and refactoring. See the
+[editor setup guide](https://github.com/muxlang/mux-syntax-highlighting/blob/main/INSTALL.md)
+for syntax tooling and the [LSP guide](https://mux-lang.dev/docs/getting-started/lsp)
+for language-server setup.
+
 The grammar accepts binary expressions continued after a trailing operator.
 It treats whitespace permissively for editor parsing; the compiler enforces
 the exact newline rule, including rejecting a leading operator on a new line.

@@ -6,6 +6,12 @@ builds the small Neovim parser library during plugin installation.
 
 ## Neovim
 
+This repository provides Tree-sitter parsing and syntax highlighting. The Mux
+compiler provides language features such as diagnostics, navigation, and
+refactoring through `mux lsp`; these are separate integrations. See the
+[compiler LSP guide](https://mux-lang.dev/docs/getting-started/lsp) and the
+[editor setup guide](https://github.com/muxlang/mux-syntax-highlighting/blob/main/INSTALL.md).
+
 Requires Neovim 0.11 or newer, a C compiler, and the Mux 0.13.0 or newer
 compiler on `PATH`.
 
