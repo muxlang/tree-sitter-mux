@@ -20,9 +20,14 @@ changing syntax or a generated consumer.
 ## Quality gate
 
 Run `tree-sitter generate grammar.js`, `tree-sitter test`, and the repository's
-parity/check scripts before committing grammar changes.
+parity/check scripts before committing grammar changes. The pre-commit hook
+runs generation and corpus checks for grammar changes. CI also checks parser
+ABI compatibility on supported platforms and runs the Neovim integration
+checks.
 
 ## Documentation
 
 See [`README.md`](README.md) and the canonical syntax specification in
-`mux-syntax-highlighting`.
+`mux-syntax-highlighting`. See the
+[cross-repo testing policy](https://github.com/muxlang/mux-context/blob/main/docs/testing-policy.md)
+for the distinction between grammar, editor, and compiler tests.
