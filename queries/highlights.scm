@@ -1,6 +1,10 @@
 ;; Comments
 (line_comment) @comment @comment.line
 (block_comment) @comment @comment.block
+((line_comment) @comment.documentation
+  (#match? @comment.documentation "^///"))
+((block_comment) @comment.documentation
+  (#match? @comment.documentation "^/\\*\\*"))
 
 ;; Keep the identifier fallback before more specific name patterns so
 ;; declarations, calls, built-ins, and types retain their semantic captures.
