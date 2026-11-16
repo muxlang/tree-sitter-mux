@@ -30,6 +30,26 @@ assert(captures.keyword, 'Mux keyword was not highlighted')
 assert(captures['function.call'], 'Mux function call was not highlighted')
 assert(captures.number, 'Mux numeric literal was not highlighted')
 
+local comment_source = [[
+/// documentation line
+// ordinary line
+/** documentation block */
+/* ordinary block */
+]]
+local comment_tree = vim.treesitter.get_string_parser(comment_source, 'mux'):parse()[1]
+local comment_kinds = {}
+for capture_id, node in query:iter_captures(comment_tree:root(), comment_source) do
+  local text = vim.treesitter.get_node_text(node, comment_source)
+  if text:match('^///') or text:match('^/%*%*') then
+    comment_kinds[text] = comment_kinds[text] or {}
+    comment_kinds[text][query.captures[capture_id]] = true
+  elseif text:match('^//') or text:match('^/%*') then
+    assert(query.captures[capture_id] ~= 'comment.documentation', 'ordinary comments must not be documentation comments')
+  end
+end
+assert(comment_kinds['/// documentation line']['comment.documentation'], 'line MuxDoc capture missing')
+assert(comment_kinds['/** documentation block */']['comment.documentation'], 'block MuxDoc capture missing')
+
 local match_source = [[match some(15) {
     some(value) { print(value) }
     none { print("none") }
